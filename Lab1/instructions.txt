@@ -1,0 +1,48 @@
+// Task #1
+//
+// Part 1 - design a class
+//
+template <typename Key, typename Info>
+class Sequence { // singly-linked list
+...
+};
+//
+// Part 2 - write two additional (external) functions (not methods)
+//
+// Function #1
+//
+template <typename Key, typename Info>
+Sequence merge_pos (
+Sequence <Key, Info>& seq1, int start_pos1, int len1, 
+Sequence <Key, Info>& seq2, int start_pos2, int len2, 
+int count
+){
+...
+}
+//
+// Function #2
+//
+template <typename Key, typename Info>
+Sequence merge_key (
+Sequence <Key, Info>& seq1, const Key& start_key1, int start_occ1, int len1, 
+Sequence <Key, Info>& seq2, const Key& start_key2, int start_occ2, int len2, 
+int count
+){
+...
+}
+// deadline is Monday, April 12, 2021, noon
+// 1. source files (dropped in a student's folder)
+// 2. very short description (documentation) in the pdf format (dropped in a student's folder)
+// 2.a name
+// 2.b date
+// 2.c task description
+// 2.d short description of public methods
+// 2.e short information on testing
+//
+// For instance:
+//-------------
+// seq1={0,1,2,3,4,5,6,7,8,9}, start_pos1=3, len1=1,
+// seq2={0,10,20,30,40,50,60,70,80,90}, start_pos2=2, len2=2,
+// count=8
+//-------------
+//merge_pos={3,20,30,4,40,50,5,60,70,6,80,90,7,8,9}

@@ -1,0 +1,4 @@
+algoritmos, se non existe non devolver nada, pero se unha das 2 hay, entonces devolve de unha polo menos, count veces
+positions start in 0
+non necesario dividi h adn cpp, pero mellor
+test, escribir nun file que pasa nos casos especificos
