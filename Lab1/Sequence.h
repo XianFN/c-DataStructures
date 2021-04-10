@@ -32,7 +32,8 @@ public:
 
     void prinf();
     bool getInfo(const Key &key, Info &toGet);
-    bool search(const Key &key);
+    bool search(const Key &what, int occurance);
+    bool AssertEquals(string wantedOutput);
 
     Sequence<Key, Info> merge_pos(Sequence<Key, Info> &seq1, int start_pos1, int len1, Sequence<Key, Info> &seq2, int start_pos2, int len2, int count);
 
