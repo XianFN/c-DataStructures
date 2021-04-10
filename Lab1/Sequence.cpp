@@ -4,6 +4,19 @@
 using namespace std;
 
 //autoinden cntr+a, cntr+k,cntr+f
+template <typename Key, typename Info>
+Sequence<Key, Info>::Sequence()
+{
+    cout << "F" <<endl;
+    head=nullptr;
+}
+template <typename Key, typename Info>
+Sequence<Key, Info>::~Sequence()
+{
+    delete this;
+}
+
+
 //using Sequence= Sequence;
 template <typename Key, typename Info>
 Sequence<Key, Info> Sequence<Key, Info>::merge_pos(Sequence<Key, Info> &seq1, int start_pos1, int len1, Sequence<Key, Info> &seq2, int start_pos2, int len2, int count)
@@ -15,7 +28,7 @@ Sequence<Key, Info> Sequence<Key, Info>::merge_key(Sequence<Key, Info> &seq1, co
 }
 
 template <typename Key, typename Info>
-bool Sequence<Key, Info>::insertAfter(const Key &newKey, const Info &newInfo, const Key &where, int occurance = 1)
+bool Sequence<Key, Info>::insertAfter(const Key &newKey, const Info &newInfo, const Key &where, int occurance)
 {
 
     if (head == nullptr)
@@ -50,7 +63,7 @@ bool Sequence<Key, Info>::insertAfter(const Key &newKey, const Info &newInfo, co
 }
 
 template <typename Key, typename Info>
-bool Sequence<Key, Info>::insertBefore(const Key &newKey, const Info &newInfo, const Key &where, int occurance = -1)
+bool Sequence<Key, Info>::insertBefore(const Key &newKey, const Info &newInfo, const Key &where, int occurance)
 {
 //TODO HACER
     if (head == nullptr)
@@ -85,7 +98,8 @@ bool Sequence<Key, Info>::insertBefore(const Key &newKey, const Info &newInfo, c
 }
 
 template <typename Key, typename Info>
-bool insertAtBeg(const Key &newKey, const Info &newInfo){
+bool Sequence<Key, Info>::insertAtBeg(const Key &newKey, const Info &newInfo){
+
 
     if (head == nullptr)
     {
@@ -94,6 +108,8 @@ bool insertAtBeg(const Key &newKey, const Info &newInfo){
         ptr->key = newKey;
         ptr->info = newInfo;
         ptr->next =nullptr;;
+        cout<<"true"<<endl;
+    //    cout<<head->key<<endl;
         return true;
     }else{
        
@@ -109,7 +125,7 @@ bool insertAtBeg(const Key &newKey, const Info &newInfo){
 
 }
 template <typename Key, typename Info>
-    bool insertAtEnd(const Key &newKey, const Info &newInfo){
+    bool Sequence<Key, Info>::insertAtEnd(const Key &newKey, const Info &newInfo){
 
 
     if (head == nullptr)
@@ -137,7 +153,7 @@ template <typename Key, typename Info>
     }
 
 template <typename Key, typename Info>
-bool Sequence<Key, Info>::deleteElement(const Key &what, int occurance = 1)
+bool Sequence<Key, Info>::deleteElement(const Key &what, int occurance)
 {
 
     element *e = head;
@@ -147,4 +163,75 @@ bool Sequence<Key, Info>::deleteElement(const Key &what, int occurance = 1)
 
         //probablemente mal
     }
+
+
+    if (!search(what,occurance)){
+        return false;
+    }
+
+    element* prev = nullptr;
+     element* curr = head;
+      element* temp = nullptr;
+      while (curr){
+          if (curr->key == what)
+          {
+
+              occurance--;
+              if (!occurance)
+              {
+               if (head==curr)
+               {
+                   hear=curr->next;
+                   temp = curr;
+                   curr=head; 
+                }else{
+                    prev->next = curr->next;
+                    temp = curr;
+                    curr = curr->next;
+                }
+                delete temp;
+                return true;
+               
+
+
+
+              }
+              
+          }
+          prev= curr;
+          curr=curr->next;
+          
+      }
+      //not necesary   
+     // return false;
+      
+
+
+   
+
+
+}
+template <typename Key, typename Info>
+bool Sequence<Key, Info>::search(const Key &key){
+
+    if (head== nullptr || occurance < 1){
+        return false;
+    }
+    element* curr=head;
+
+    while (curr)
+    {
+        if (curr->key == what && !(--occurance))
+        {
+            return true;
+        }
+        curr= curr->next;
+        
+    }
+    return false;
+    
+
+
+
+
 }
