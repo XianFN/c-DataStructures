@@ -15,7 +15,8 @@ Sequence<Key, Info>::Sequence()
 template <typename Key, typename Info>
 Sequence<Key, Info>::~Sequence()
 {
-
+    //TODO COMPROBAR
+    cout<<"delete"<<endl;
     if (head != nullptr) // List is not empty
     {
         element *curr = head;
@@ -29,8 +30,93 @@ Sequence<Key, Info>::~Sequence()
         }
     }
 }
+template <typename Key, typename Info>
+Sequence<Key, Info>::Sequence(const Sequence& copy){
+    this->head=nullptr;
+    this->head= copy.head;
 
-//using Sequence= Sequence;
+}
+template <typename Key, typename Info>
+Sequence<Key, Info>& Sequence<Key, Info>::operator=(const Sequence<Key, Info> & moveObj) {
+    //swap(moveObj.head,this);
+
+    cout<<"fff"<<endl;
+    
+    //this->~Sequence();
+    //condicions de bacio head e head.next non existe
+    element* headptr= moveObj.head;
+    head->key= headptr->key;
+     head->info= headptr->info;
+     head->next= headptr->next;
+
+
+    element* curr= head;
+    
+    element * temp;
+     
+    while(headptr->next != nullptr){//cycle through origList
+     cout<<"fff"<<endl;
+        
+
+  
+  temp->info=headptr->info;
+  temp->next= headptr->next;
+  temp->key= headptr->key;
+
+  curr->next = temp;  //add temp to end of this list
+  
+  headptr = headptr->next; //advance lastPtr to end of this list
+  //go to next node in origList
+  
+    }
+   //  moveObj.~Sequence();
+   // &moveObj->head=nullptr;
+  
+   
+    /*
+    element* curr= headptr->next;
+    while(curr != NULL){
+			lastPtr = new Node(origPtr->data);
+			curr = curr->next;
+		}
+    
+		NodePointer origPtr, lastPtr;
+		origPtr = origList.first;
+		lastPtr = new Node(origPtr->data);
+
+		first = lastPtr;
+
+		while(lastPtr != NULL){
+			lastPtr = new Node(origPtr->data);
+			lastPtr = lastPtr->next;
+		}
+
+	}
+    */
+
+
+    return *this;
+
+}
+// template <typename Key, typename Info>
+//  Sequence<Key, Info>& Sequence<Key, Info>::operator-=(const Sequence<Key, Info> & substractOp){
+
+//  }
+//  template <typename Key, typename Info>
+//     Sequence<Key, Info>& Sequence<Key, Info>::operator+=(const Sequence<Key, Info> & addOp){
+
+//     }
+//     template <typename Key, typename Info>
+//       Sequence<Key, Info> operator-( Sequence<Key, Info> substractOp2, const Sequence<Key, Info>& substractOp){
+
+//     }
+//     template <typename Key, typename Info>
+//       Sequence<Key, Info> operator+( Sequence<Key, Info> addOp2, const Sequence<Key, Info>& addOp){
+
+//     }
+
+
+
 template <typename Key, typename Info>
 Sequence<Key, Info> Sequence<Key, Info>::merge_pos(Sequence<Key, Info> &seq1, int start_pos1, int len1, Sequence<Key, Info> &seq2, int start_pos2, int len2, int count)
 {
@@ -45,7 +131,7 @@ bool Sequence<Key, Info>::insertAfter(const Key &newKey, const Info &newInfo, co
 {
     //CORRECT
 
-    if (head == nullptr)
+      if (head == nullptr)
     {
         return false;
     }

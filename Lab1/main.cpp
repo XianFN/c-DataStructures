@@ -2,6 +2,39 @@
 
 int main(int argc, char *argv[])
 {
+     cout << "--------Constructors---------" << endl;
+    Sequence<int, int> test1Constructors;
+    test1Constructors.insertAtBeg(2, 5);
+    test1Constructors.insertAtBeg(6, 7);
+
+    Sequence<int, int> test2Constructors= test1Constructors;
+
+    test1Constructors.insertAtBeg(1, 1);
+    test2Constructors.insertAtBeg(3, 3);
+    cout << "Test 0.1: " << (test2Constructors.AssertEquals("[3,3][6,7][2,5]") == 1 ? "true" : "false") << endl;
+    test2Constructors.prinf();
+
+
+
+     Sequence<int, int> test3Constructors;
+     test3Constructors.insertAtBeg(3, 1);
+     test3Constructors=move( test1Constructors);
+
+     cout << "Test 0.2: " << (test3Constructors.AssertEquals("[1,1][6,7][2,5]") == 1 ? "true" : "false") << endl;
+     test3Constructors.prinf();
+
+  //   cout << "Test 0.2: " << (test1Constructors.AssertEquals("[6,7][2,5]") == 1 ? "true" : "false") << endl;
+    // test1Constructors.prinf();
+
+     
+
+
+
+
+
+
+
+
     cout << "--------INSERT AT BEG---------" << endl;
     Sequence<int, int> test1InsertBeg;
     test1InsertBeg.insertAtBeg(2, 5);

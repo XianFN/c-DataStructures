@@ -20,9 +20,14 @@ private:
 public:
     Sequence();
     ~Sequence();
+    Sequence(const Sequence<Key, Info>& copy);
+  
 
-    Sequence<Key, Info> &operator=(const Sequence<Key, Info> &);
-    Sequence(const Sequence<Key, Info> &);
+    Sequence<Key, Info> &operator=(const Sequence<Key, Info> & move);
+    // Sequence<Key, Info> &operator-=(const Sequence<Key, Info> & substractOp);
+    // Sequence<Key, Info> &operator+=(const Sequence<Key, Info> & addOp);
+    // friend  Sequence<Key, Info> operator-( Sequence<Key, Info> substractOp2, const Sequence<Key, Info>& substractOp);
+    // friend  Sequence<Key, Info> operator+( Sequence<Key, Info> addOp2, const Sequence<Key, Info>& addOp);
 
     bool insertAfter(const Key &newKey, const Info &newInfo, const Key &where, int occurance );
     bool insertBefore(const Key &newKey, const Info &newInfo, const Key &where, int occurance );
