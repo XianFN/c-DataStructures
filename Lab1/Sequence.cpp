@@ -15,8 +15,7 @@ Sequence<Key, Info>::Sequence()
 template <typename Key, typename Info>
 Sequence<Key, Info>::~Sequence()
 {
-    //TODO COMPROBAR
-    cout<<"delete"<<endl;
+  
     if (head != nullptr) // List is not empty
     {
         element *curr = head;
@@ -31,107 +30,166 @@ Sequence<Key, Info>::~Sequence()
     }
 }
 template <typename Key, typename Info>
-Sequence<Key, Info>::Sequence(const Sequence& copy){
-    this->head=nullptr;
-    this->head= copy.head;
-
+Sequence<Key, Info>::Sequence(const Sequence &copy)
+{
+    this->head = nullptr;
+    this->head = copy.head;
 }
 template <typename Key, typename Info>
-Sequence<Key, Info>& Sequence<Key, Info>::operator=(const Sequence<Key, Info> & moveObj) {
+Sequence<Key, Info> &Sequence<Key, Info>::operator=(const Sequence<Key, Info> &moveObj)
+{
+
     //swap(moveObj.head,this);
-
-    cout<<"fff"<<endl;
-    
     //this->~Sequence();
-    //condicions de bacio head e head.next non existe
-    element* headptr= moveObj.head;
-    head->key= headptr->key;
-     head->info= headptr->info;
-     head->next= headptr->next;
 
-
-    element* curr= head;
-    
-    element * temp;
-     
-    while(headptr->next != nullptr){//cycle through origList
-     cout<<"fff"<<endl;
-        
-
-  
-  temp->info=headptr->info;
-  temp->next= headptr->next;
-  temp->key= headptr->key;
-
-  curr->next = temp;  //add temp to end of this list
-  
-  headptr = headptr->next; //advance lastPtr to end of this list
-  //go to next node in origList
-  
+    if (moveObj.head==nullptr )
+    {
+       return *this;
     }
-   //  moveObj.~Sequence();
-   // &moveObj->head=nullptr;
-  
-   
-    /*
-    element* curr= headptr->next;
-    while(curr != NULL){
-			lastPtr = new Node(origPtr->data);
-			curr = curr->next;
-		}
     
-		NodePointer origPtr, lastPtr;
-		origPtr = origList.first;
-		lastPtr = new Node(origPtr->data);
+    element *headptr = moveObj.head;
+    head->key = headptr->key;
+    head->info = headptr->info;
+    head->next = headptr->next;
 
-		first = lastPtr;
+    element *curr = head;
 
-		while(lastPtr != NULL){
-			lastPtr = new Node(origPtr->data);
-			lastPtr = lastPtr->next;
-		}
+    element *temp;
 
-	}
-    */
+    while (headptr->next != nullptr)
+    {
 
+        temp->info = headptr->info;
+        temp->next = headptr->next;
+        temp->key = headptr->key;
+
+        curr->next = temp;
+
+        headptr = headptr->next;
+    }
 
     return *this;
-
 }
-// template <typename Key, typename Info>
-//  Sequence<Key, Info>& Sequence<Key, Info>::operator-=(const Sequence<Key, Info> & substractOp){
-
-//  }
-//  template <typename Key, typename Info>
-//     Sequence<Key, Info>& Sequence<Key, Info>::operator+=(const Sequence<Key, Info> & addOp){
-
-//     }
-//     template <typename Key, typename Info>
-//       Sequence<Key, Info> operator-( Sequence<Key, Info> substractOp2, const Sequence<Key, Info>& substractOp){
-
-//     }
-//     template <typename Key, typename Info>
-//       Sequence<Key, Info> operator+( Sequence<Key, Info> addOp2, const Sequence<Key, Info>& addOp){
-
-//     }
-
-
 
 template <typename Key, typename Info>
-Sequence<Key, Info> Sequence<Key, Info>::merge_pos(Sequence<Key, Info> &seq1, int start_pos1, int len1, Sequence<Key, Info> &seq2, int start_pos2, int len2, int count)
+void Sequence<Key, Info>::merge_pos(Sequence<Key, Info> &seq1, int start_pos1, int len1, Sequence<Key, Info> &seq2, int start_pos2, int len2, int count)
 {
+   if (count > 0  )
+    {
+        
+
+    element *currSeq1 = seq1.head;
+    element *currSeq2 = seq2.head;
+    
+
+    while (start_pos1 != 0 && currSeq1 != nullptr)
+    {
+        currSeq1 = currSeq1->next;
+        start_pos1--;
+    }
+    while (start_pos2 != 0 && currSeq2 != nullptr)
+    {
+        currSeq2 = currSeq2->next;
+        start_pos2--;
+    }
+
+    while (count != 0)
+    {
+
+        int lenght1 = len1;
+        int length2 = len2;
+        while (lenght1 != 0 && currSeq1 != nullptr)
+        {
+
+            this->insertAtEnd(currSeq1->key, currSeq1->info);
+
+            currSeq1 = currSeq1->next;
+            lenght1--;
+        }
+
+        while (length2 != 0 && currSeq2 != nullptr)
+        {
+
+            this->insertAtEnd(currSeq2->key, currSeq2->info);
+
+            currSeq2 = currSeq2->next;
+            length2--;
+        }
+
+        count--;
+    }
+    }
 }
 template <typename Key, typename Info>
-Sequence<Key, Info> Sequence<Key, Info>::merge_key(Sequence<Key, Info> &seq1, const Key &start_key1, int start_occ1, int len1, Sequence<Key, Info> &seq2, const Key &start_key2, int start_occ2, int len2, int count)
+void Sequence<Key, Info>::merge_key(Sequence<Key, Info> &seq1, const Key &start_key1, int start_occ1, int len1, Sequence<Key, Info> &seq2, const Key &start_key2, int start_occ2, int len2, int count)
 {
+     if (count > 0  )
+    {
+        
+    element *currSeq1 = seq1.head;
+    element *currSeq2 = seq2.head;
+
+    int originalOcc1 = start_occ1;
+    int originalOcc2 = start_occ2;
+   
+
+    while (start_occ1 != 0 && currSeq1 != nullptr)
+    {
+        if (currSeq1->key == start_key1)
+        {
+            start_occ1--;
+        }
+        if (start_occ1 != 0)
+        {
+            currSeq1 = currSeq1->next;
+        }
+    }
+    while (start_occ2 != 0 && currSeq2 != nullptr)
+    {
+        if (currSeq2->key == start_key2)
+        {
+            start_occ2--;
+        }
+
+        if (start_occ2 != 0)
+        {
+            currSeq2 = currSeq2->next;
+        }
+    }
+
+    while (count != 0)
+    {
+
+        int lenght1 = len1;
+        int length2 = len2;
+        while (start_occ1 == 0 && lenght1 != 0 && currSeq1 != nullptr && originalOcc1 > 0)
+        {
+
+            this->insertAtEnd(currSeq1->key, currSeq1->info);
+
+            currSeq1 = currSeq1->next;
+            lenght1--;
+        }
+
+        while (start_occ2 == 0 && length2 != 0 && currSeq2 != nullptr && originalOcc2 > 0)
+        {
+
+            this->insertAtEnd(currSeq2->key, currSeq2->info);
+
+            currSeq2 = currSeq2->next;
+            length2--;
+        }
+
+        count--;
+    }
+    }
 }
 
 template <typename Key, typename Info>
 bool Sequence<Key, Info>::insertAfter(const Key &newKey, const Info &newInfo, const Key &where, int occurance)
 {
-    //CORRECT
 
-      if (head == nullptr)
+    if (head == nullptr)
     {
         return false;
     }
@@ -139,6 +197,7 @@ bool Sequence<Key, Info>::insertAfter(const Key &newKey, const Info &newInfo, co
     {
         return false;
     }
+    
 
     element *curr = head;
     while (curr != nullptr)
@@ -165,7 +224,6 @@ bool Sequence<Key, Info>::insertAfter(const Key &newKey, const Info &newInfo, co
 template <typename Key, typename Info>
 bool Sequence<Key, Info>::insertBefore(const Key &newKey, const Info &newInfo, const Key &where, int occurance)
 {
-    //CORRECT?
     if (head == nullptr)
     {
         return false;
@@ -220,7 +278,7 @@ bool Sequence<Key, Info>::insertBefore(const Key &newKey, const Info &newInfo, c
 template <typename Key, typename Info>
 bool Sequence<Key, Info>::insertAtBeg(const Key &newKey, const Info &newInfo)
 {
-    //CORRECT
+   
     if (head == nullptr)
     {
 
@@ -246,7 +304,7 @@ bool Sequence<Key, Info>::insertAtBeg(const Key &newKey, const Info &newInfo)
 template <typename Key, typename Info>
 bool Sequence<Key, Info>::insertAtEnd(const Key &newKey, const Info &newInfo)
 {
-    //CORRECT
+    
     if (head == nullptr)
     {
         insertAtBeg(newKey, newInfo);
@@ -271,7 +329,7 @@ bool Sequence<Key, Info>::insertAtEnd(const Key &newKey, const Info &newInfo)
 template <typename Key, typename Info>
 bool Sequence<Key, Info>::deleteElement(const Key &what, int occurance)
 {
-    //CORRECT
+    
 
     if (!search(what, occurance))
     {
@@ -312,7 +370,7 @@ bool Sequence<Key, Info>::deleteElement(const Key &what, int occurance)
 template <typename Key, typename Info>
 bool Sequence<Key, Info>::search(const Key &what, int occurance)
 {
-    //CORRECT
+    
 
     if (head == nullptr || occurance < 1)
     {

@@ -23,11 +23,7 @@ int count
 // Function #2
 //
 template <typename Key, typename Info>
-Sequence merge_key (
-Sequence <Key, Info>& seq1, const Key& start_key1, int start_occ1, int len1, 
-Sequence <Key, Info>& seq2, const Key& start_key2, int start_occ2, int len2, 
-int count
-){
+Sequence merge_key (Sequence <Key, Info>& seq1, const Key& start_key1, int start_occ1, int len1, Sequence <Key, Info>& seq2, const Key& start_key2, int start_occ2, int len2, int count){
 ...
 }
 // deadline is Monday, April 12, 2021, noon
