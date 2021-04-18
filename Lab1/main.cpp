@@ -45,6 +45,92 @@ void testAll()
     test3Constructors.prinf();
 
 
+    Sequence<int, int> test7Constructors;
+    test7Constructors+= test3Constructors;
+    cout << "Test 0.4(+=operator, empty first List): " << (test7Constructors.AssertEquals("[6,7][2,5]") == 1 ? "true" : "false") << endl;
+    test7Constructors.prinf();
+
+
+    test7Constructors+=test3Constructors;
+    cout << "Test 0.5(+=operator): " << (test7Constructors.AssertEquals("[6,7][2,5][6,7][2,5]") == 1 ? "true" : "false") << endl;
+    test7Constructors.prinf();
+
+    Sequence<int, int> test8Constructors;
+    test7Constructors+= test8Constructors;
+    cout << "Test 0.6(+=operator, empty second List): " << (test7Constructors.AssertEquals("[6,7][2,5][6,7][2,5]") == 1 ? "true" : "false") << endl;
+    test7Constructors.prinf();
+
+    Sequence<int, int> test9Constructors;
+    test9Constructors=test7Constructors + test8Constructors;
+    cout << "Test 0.7(+operator, empty second List): " << (test9Constructors.AssertEquals("[6,7][2,5][6,7][2,5]") == 1 ? "true" : "false") << endl;
+    test9Constructors.prinf();
+
+    Sequence<int, int> test10Constructors;
+    test10Constructors = test7Constructors + test9Constructors;
+    cout << "Test 0.8(+operator): " << (test10Constructors.AssertEquals("[6,7][2,5][6,7][2,5][6,7][2,5][6,7][2,5]") == 1 ? "true" : "false") << endl;
+    test10Constructors.prinf();
+
+
+
+    Sequence<int, int> test11Constructors;
+    Sequence<int, int> test12Constructors;
+
+
+    test11Constructors-= test12Constructors;
+    cout << "Test 0.9(-=operator, empty first List): " << (test12Constructors.AssertEquals("[]") == 1 ? "true" : "false") << endl;
+    test12Constructors.prinf();
+
+
+    test11Constructors.insertAtBeg(1,1);
+    test11Constructors.insertAtBeg(2,2);
+    test11Constructors-= test12Constructors;
+    cout << "Test 0.10(-=operator, empty second List): " << (test11Constructors.AssertEquals("[2,2][1,1]") == 1 ? "true" : "false") << endl;
+    test11Constructors.prinf();
+
+
+    test12Constructors.insertAtBeg(1,1);
+    test11Constructors-= test12Constructors;
+    cout << "Test 0.11(-=operator): " << (test11Constructors.AssertEquals("[2,2]") == 1 ? "true" : "false") << endl;
+    test11Constructors.prinf();
+
+
+    Sequence<int, int> test13Constructors;
+    Sequence<int, int> test14Constructors;
+    Sequence<int, int> test15Constructors;
+    test15Constructors.insertAtEnd(5,5);
+    test13Constructors=test14Constructors - test15Constructors;
+    cout << "Test 0.12(-operator, empty first List): " << (test13Constructors.AssertEquals("[]") == 1 ? "true" : "false") << endl;
+    test13Constructors.prinf();
+
+
+    test13Constructors=test15Constructors - test14Constructors;
+    cout << "Test 0.13(-operator, empty second List): " << (test13Constructors.AssertEquals("[5,5]") == 1 ? "true" : "false") << endl;
+    test13Constructors.prinf();
+
+
+    test14Constructors.insertAtEnd(0,0);
+    test14Constructors.insertAtEnd(1,1);
+    test14Constructors.insertAtEnd(2,5);
+    test14Constructors.insertAtEnd(3,5);
+    test14Constructors.insertAtEnd(3,3);
+    test14Constructors.insertAtEnd(4,5);
+
+    test15Constructors.insertAtEnd(3,0);
+    test15Constructors.insertAtEnd(0,5);
+    test15Constructors.insertAtEnd(6,5);
+    test15Constructors.insertAtEnd(0,5);
+    test13Constructors=test14Constructors - test15Constructors;
+    cout << "Test 0.14(-operator): " << (test13Constructors.AssertEquals("[1,1][2,5][3,3][4,5]") == 1 ? "true" : "false") << endl;
+    test13Constructors.prinf();
+
+
+
+
+
+
+
+
+
 
 
     cout << endl

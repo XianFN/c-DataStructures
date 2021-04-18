@@ -115,8 +115,79 @@ Sequence<Key, Info> &Sequence<Key, Info>::operator=(const Sequence<Key, Info> &m
     return *this;
     */
 }
-template <typename Key, typename Info>
 
+template <typename Key, typename Info>
+Sequence<Key, Info> &Sequence<Key, Info>::operator+=(const Sequence<Key, Info> &newList)
+{
+    Sequence<Key, Info> *addition = new Sequence<Key, Info>(newList); // make deep copy of passed in list
+    if (this->isEmpty())
+        head = addition->head;
+    else if (addition->isEmpty()) {
+        return *this;
+
+}else{
+        element *curr = head;
+        while (curr->next != nullptr)
+        {
+            curr= curr->next;
+
+        }
+        curr->next=addition->head;
+    }
+
+
+    // Destroy deep copy members but not what they point to
+    addition->head = nullptr;
+    delete addition;
+
+    return *this;
+}
+template <typename key, typename info>
+Sequence<key, info> operator+(const Sequence<key, info>& addOp2, const Sequence<key, info>& addOp)
+{
+    Sequence<key, info> result(addOp2); // make deep local copy
+    result += addOp;
+    return result;
+}
+template <typename Key, typename Info>
+Sequence<Key, Info> &Sequence<Key, Info>::operator-=(const Sequence<Key, Info> &newList)
+{
+    Sequence<Key, Info> *substract = new Sequence<Key, Info>(newList); // make deep copy of passed in list
+    if (this->isEmpty())
+        return *this;
+    else if (substract->isEmpty()) {
+        return *this;
+
+}else{
+        element *curr = substract->head;
+        while (curr != nullptr)
+        {
+            this->deleteElement(curr->key,1);
+            curr= curr->next;
+
+        }
+    }
+
+
+    // Destroy deep copy members but not what they point to
+    substract->head = nullptr;
+    delete substract;
+
+    return *this;
+}
+template <typename key, typename info>
+Sequence<key, info> operator-(const Sequence<key, info>& substractOp2, const Sequence<key, info>& substractOp)
+{
+    Sequence<key, info> result(substractOp2);
+    result -= substractOp;
+    return result;
+}
+
+
+
+
+
+template <typename Key, typename Info>
 bool Sequence<Key, Info>::isEmpty(){
     if (head==nullptr) {
         return true;

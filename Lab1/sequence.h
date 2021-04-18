@@ -14,9 +14,9 @@ private:
     struct element
     {
 
-            Key key;
-            Info info;
-            element *next;
+        Key key;
+        Info info;
+        element *next;
 
 
     };
@@ -27,9 +27,13 @@ public:
     Sequence();
     ~Sequence();
     Sequence(const Sequence<Key, Info>& copy);
-
-
     Sequence<Key, Info> &operator=(const Sequence<Key, Info> & move);
+    Sequence<Key, Info> &operator-=(const Sequence<Key, Info> & newList);
+    Sequence<Key, Info> &operator+=(const Sequence<Key, Info> & newList);
+    template <typename key, typename info>
+    friend  Sequence<key, info> operator-(const Sequence<key, info>& substractOp2, const Sequence<key, info>& substractOp);
+    template <typename key, typename info>
+    friend  Sequence<key, info> operator+(const Sequence<key, info>& addOp2, const Sequence<key, info>& addOp);
 
     bool insertAfter(const Key &newKey, const Info &newInfo, const Key &where, int occurance );
     bool insertBefore(const Key &newKey, const Info &newInfo, const Key &where, int occurance );
