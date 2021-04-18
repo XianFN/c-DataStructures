@@ -1,76 +1,55 @@
 #include "sequence.h"
 #include <iostream>
 #include <string>
-
 #include <sstream>
 using namespace std;
 
-//autoinden cntr+a, cntr+k,cntr+f
 template <typename Key, typename Info>
 Sequence<Key, Info>::Sequence()
 {
-
     head = nullptr;
 }
 template <typename Key, typename Info>
 Sequence<Key, Info>::~Sequence()
 {
-       element *curr=head;
-       while (curr!=nullptr) {
-           curr=curr->next;
-           delete head;
-           head=curr;
-       }
-
-    /*
-
-    if (head != nullptr) // List is not empty
-    {
-        element *curr = head;
-        element *temp = nullptr;
-        while (curr != nullptr) // delete remaining nodes
-        {
-
-            temp = curr;
-            curr = curr->next;
-            delete temp;
-        }
-        head=nullptr;
+    element *curr=head;
+    while (curr!=nullptr) {
+        curr=curr->next;
+        delete head;
+        head=curr;
     }
-    */
 }
 template <typename Key, typename Info>
 Sequence<Key, Info>::Sequence(const Sequence &copy)
 {
     if (copy.head == nullptr){
 
-       head=nullptr;
-
+        head=nullptr;
 
     }else{
 
 
-     element* tmp = copy.head;
+        element* tmp = copy.head;
 
-     head = new element;
-     head->info = tmp->info;
-     head->key = tmp->key;
-     head->next = nullptr;
-     element*  current = head;
+        head = new element;
+        head->info = tmp->info;
+        head->key = tmp->key;
+        head->next = nullptr;
+        element*  current = head;
 
-     tmp = tmp->next;
+        tmp = tmp->next;
 
-     while (tmp != nullptr)
-     {
-         current->next = new element;
-         current = current->next;
+        while (tmp != nullptr)
+        {
+            current->next = new element;
+            current = current->next;
 
-         current->info = tmp->info;
-         current->key = tmp->key;
-         current->next = nullptr;
-         tmp = tmp->next;
-     }
-}
+            current->info = tmp->info;
+            current->key = tmp->key;
+            current->next = nullptr;
+            tmp = tmp->next;
+        }
+    }
 }
 template <typename Key, typename Info>
 Sequence<Key, Info> &Sequence<Key, Info>::operator=(const Sequence<Key, Info> &moveObj)
@@ -79,41 +58,6 @@ Sequence<Key, Info> &Sequence<Key, Info>::operator=(const Sequence<Key, Info> &m
     swap(temp.head,head);
     return *this;
 
-/*
-    cout << "operator ="<<endl;
-    //swap(moveObj.head,this);
-    this->~Sequence();
-
-    if (moveObj.head==nullptr )
-    {
-        return *this;
-    }
-    cout <<"FF"<<endl;
-
-    element *headptr = moveObj.head;
-    cout <<"FF"<<endl;
-    this->insertAtEnd(headptr->key,headptr->info);
-
-
-
-    cout <<"FF"<<endl;
-
-
-
-    cout <<"FF"<<endl;
-
-
-    while (headptr->next != nullptr)
-    {
-
-        this->insertAtEnd(headptr->key,headptr->info);
-
-
-        headptr = headptr->next;
-    }
-
-    return *this;
-    */
 }
 
 template <typename Key, typename Info>
@@ -125,7 +69,7 @@ Sequence<Key, Info> &Sequence<Key, Info>::operator+=(const Sequence<Key, Info> &
     else if (addition->isEmpty()) {
         return *this;
 
-}else{
+    }else{
         element *curr = head;
         while (curr->next != nullptr)
         {
@@ -136,7 +80,7 @@ Sequence<Key, Info> &Sequence<Key, Info>::operator+=(const Sequence<Key, Info> &
     }
 
 
-    // Destroy deep copy members but not what they point to
+    // Destroy deep copy
     addition->head = nullptr;
     delete addition;
 
@@ -158,7 +102,7 @@ Sequence<Key, Info> &Sequence<Key, Info>::operator-=(const Sequence<Key, Info> &
     else if (substract->isEmpty()) {
         return *this;
 
-}else{
+    }else{
         element *curr = substract->head;
         while (curr != nullptr)
         {
@@ -168,8 +112,7 @@ Sequence<Key, Info> &Sequence<Key, Info>::operator-=(const Sequence<Key, Info> &
         }
     }
 
-
-    // Destroy deep copy members but not what they point to
+    // Destroy deep copy
     substract->head = nullptr;
     delete substract;
 
@@ -182,10 +125,6 @@ Sequence<key, info> operator-(const Sequence<key, info>& substractOp2, const Seq
     result -= substractOp;
     return result;
 }
-
-
-
-
 
 template <typename Key, typename Info>
 bool Sequence<Key, Info>::isEmpty(){
@@ -261,8 +200,6 @@ bool Sequence<Key, Info>::itsNodeEmpty(int index){
 
         }
         return false;
-
-
     }
 
 }

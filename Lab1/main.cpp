@@ -75,7 +75,6 @@ void testAll()
     Sequence<int, int> test11Constructors;
     Sequence<int, int> test12Constructors;
 
-
     test11Constructors-= test12Constructors;
     cout << "Test 0.9(-=operator, empty first List): " << (test12Constructors.AssertEquals("[]") == 1 ? "true" : "false") << endl;
     test12Constructors.prinf();
@@ -122,12 +121,6 @@ void testAll()
     test13Constructors=test14Constructors - test15Constructors;
     cout << "Test 0.14(-operator): " << (test13Constructors.AssertEquals("[1,1][2,5][3,3][4,5]") == 1 ? "true" : "false") << endl;
     test13Constructors.prinf();
-
-
-
-
-
-
 
 
 
@@ -369,9 +362,6 @@ void testAll()
     cout << "Test 8.3:  " << (testemptyandkey.isEmpty()== false ? "true" : "false") << endl;
     cout << "Test 8.4:  " << (testemptyandkey.itsNodeEmpty(5)== true ? "true" : "false") << endl;
     cout << "Test 8.5:  " << (testemptyandkey.itsNodeEmpty(6)== false ? "true" : "false") << endl;
-
-
-
     cout << "Test 8.6:  " << (testemptyandkey.getKey(3) == 3 ? "true" : "false") << endl;
     cout << "Test 8.7:  " << (testemptyandkey.getKey(5) == 5 ? "true" : "false") << endl;
     cout << "Test 8.8:  " << (testemptyandkey.getKey(0) == 0 ? "true" : "false") << endl;
