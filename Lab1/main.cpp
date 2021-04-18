@@ -9,9 +9,8 @@ void testAll();
 
 int main(int argc, char *argv[])
 {
-    QCoreApplication a(argc, argv);
     testAll();
-    return a.exec();
+    exit(0);
 
 }
 
@@ -29,6 +28,24 @@ void testAll()
     test2Constructors.insertAtBeg(3, 3);
     cout << "Test 0.1: " << (test2Constructors.AssertEquals("[3,3][6,7][2,5]") == 1 ? "true" : "false") << endl;
     test2Constructors.prinf();
+
+
+
+    Sequence<int, int> test4Constructors;
+    Sequence<int, int> test5Constructors = test4Constructors;//call to copy constructor
+    cout << "Test 0.2(empty copyconstructor): " << (test5Constructors.AssertEquals("[]") == 1 ? "true" : "false") << endl;
+
+    Sequence<int, int> test6Constructors;
+    test6Constructors.insertAtBeg(2, 5);
+    test6Constructors.insertAtBeg(6, 7);
+    Sequence<int, int> test3Constructors;
+    test3Constructors.insertAtEnd(3,6);
+    test3Constructors= test6Constructors;// calls to assignment constructor
+    cout << "Test 0.3: " << (test3Constructors.AssertEquals("[6,7][2,5]") == 1 ? "true" : "false") << endl;
+    test3Constructors.prinf();
+
+
+
 
     cout << endl
          << "--------INSERT AT BEG---------" << endl;
@@ -269,9 +286,9 @@ void testAll()
 
 
 
-    cout << "Test 8.6:  " << testemptyandkey.getKey(3) << endl;
-    cout << "Test 8.7:  " << testemptyandkey.getKey(5) << endl;
-    cout << "Test 8.8:  " << testemptyandkey.getKey(0) << endl;
+    cout << "Test 8.6:  " << (testemptyandkey.getKey(3) == 3 ? "true" : "false") << endl;
+    cout << "Test 8.7:  " << (testemptyandkey.getKey(5) == 5 ? "true" : "false") << endl;
+    cout << "Test 8.8:  " << (testemptyandkey.getKey(0) == 0 ? "true" : "false") << endl;
 
 
 }

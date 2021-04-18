@@ -15,6 +15,14 @@ Sequence<Key, Info>::Sequence()
 template <typename Key, typename Info>
 Sequence<Key, Info>::~Sequence()
 {
+       element *curr=head;
+       while (curr!=nullptr) {
+           curr=curr->next;
+           delete head;
+           head=curr;
+       }
+
+    /*
 
     if (head != nullptr) // List is not empty
     {
@@ -27,48 +35,85 @@ Sequence<Key, Info>::~Sequence()
             curr = curr->next;
             delete temp;
         }
+        head=nullptr;
     }
+    */
 }
 template <typename Key, typename Info>
 Sequence<Key, Info>::Sequence(const Sequence &copy)
 {
-    this->head = nullptr;
-    this->head = copy.head;
+    if (copy.head == nullptr){
+
+       head=nullptr;
+
+
+    }else{
+
+
+     element* tmp = copy.head;
+
+     head = new element;
+     head->info = tmp->info;
+     head->key = tmp->key;
+     head->next = nullptr;
+     element*  current = head;
+
+     tmp = tmp->next;
+
+     while (tmp != nullptr)
+     {
+         current->next = new element;
+         current = current->next;
+
+         current->info = tmp->info;
+         current->key = tmp->key;
+         current->next = nullptr;
+         tmp = tmp->next;
+     }
+}
 }
 template <typename Key, typename Info>
 Sequence<Key, Info> &Sequence<Key, Info>::operator=(const Sequence<Key, Info> &moveObj)
 {
+    Sequence<Key, Info> temp(moveObj);
+    swap(temp.head,head);
+    return *this;
 
+/*
+    cout << "operator ="<<endl;
     //swap(moveObj.head,this);
-    //this->~Sequence();
+    this->~Sequence();
 
     if (moveObj.head==nullptr )
     {
         return *this;
     }
+    cout <<"FF"<<endl;
 
     element *headptr = moveObj.head;
-    head->key = headptr->key;
-    head->info = headptr->info;
-    head->next = headptr->next;
+    cout <<"FF"<<endl;
+    this->insertAtEnd(headptr->key,headptr->info);
 
-    element *curr = head;
 
-    element *temp;
+
+    cout <<"FF"<<endl;
+
+
+
+    cout <<"FF"<<endl;
+
 
     while (headptr->next != nullptr)
     {
 
-        temp->info = headptr->info;
-        temp->next = headptr->next;
-        temp->key = headptr->key;
+        this->insertAtEnd(headptr->key,headptr->info);
 
-        curr->next = temp;
 
         headptr = headptr->next;
     }
 
     return *this;
+    */
 }
 template <typename Key, typename Info>
 
