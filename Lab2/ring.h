@@ -120,6 +120,9 @@ public:
         Iterator(Ring<Key, Info>*otr=nullptr): ptr(nullptr){
             owner = otr;
         }
+        //constructores?
+        //Iterator();
+        //~Iterator();
 
         Info& operator*();  // std::pair<Key, Info>& operator*();
         Iterator& operator++();
@@ -164,6 +167,7 @@ public:
     ~Ring();
     Ring (const Ring<Key, Info>&);
     Ring<Key, Info>& operator= (const Ring<Key, Info>&copy);
+
     Ring<Key, Info>& operator++ ();
     Ring<Key, Info>& operator+ (const Ring<Key, Info>&newIt);
     Ring<Key, Info>& operator+= (const Ring<Key, Info>&newIt);
@@ -173,16 +177,23 @@ public:
 
 
 
+    bool insertAtBeg (const Key& newKey, const Info& newInfo,bool direct);
+    bool insertAtEnd (const Key& newKey, const Info& newInfo,bool direct);
 
 
-    bool insertAfter (const Key& newKey, const Info& newInfo, const Key& where, int occurance=1);
+    bool insertAfter (const Key& newKey, const Info& newInfo, const Key& where, int occurance,bool direct);
+    bool insertBefore (const Key& newKey, const Info& newInfo, const Key& where, int occurance,bool direct);
+
     int search (const Key& key); // int instead of bool number of occurance, 0 nothing
-    bool remove (const Key& key, int occurance=1);
+    bool remove (const Key& key, int occurance, bool direct);
     void print(bool direct);
-    bool search2 (const Key& key, int occurance=1);
+     void print2(bool direct);
+    void reverse();
+
+    bool search2(const Key& key, int occurance);
 
 
-    Iterator search (const Key& where, int occurance=1);
+    Iterator search3 (const Key& where, int occurance=1);
     bool insertAfter (const Key& newKey, const Info& newInfo, Iterator where);
     Iterator begin();
     Iterator end();
