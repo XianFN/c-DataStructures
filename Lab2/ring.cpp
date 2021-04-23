@@ -538,18 +538,18 @@ typename Ring<Key, Info>::Iterator Ring<Key, Info>::Iterator::operator++(int){
     if (ptr!=nullptr) {
         ptr = ptr->next;
     }
-    return curr;
+    return *this;
 
 }
 
 template <typename Key, typename Info>
 typename Ring<Key, Info>::Iterator& Ring<Key, Info>::Iterator::operator++(){
 
-
+    Iterator a(*this);
     if (ptr!=nullptr) {
         ptr = ptr->next;
     }
-    return *this;
+    return a;
 }
 template <typename Key, typename Info>
 typename Ring<Key, Info>::Iterator Ring<Key, Info>::Iterator::operator+(int i){
@@ -601,11 +601,138 @@ Key& Ring<Key, Info>::Iterator::getKey(){
     return ptr->key;
 }
 template <typename Key, typename Info>
+Info& Ring<Key, Info>::Iterator::getInfo(){
+
+
+    return ptr->info;
+}
+template <typename Key, typename Info>
 bool Ring<Key, Info>::Iterator::setKey(const Key &newkey){
 
     this->ptr->key=newkey;
     return true;
 }
+
+
+
+//----------------------------------------------------CONST ITERATOR---------------------------------------------------------------
+template <typename Key, typename Info>
+ typename Ring<Key, Info>::const_Iterator Ring<Key, Info>::beginConst() const{
+    const_Iterator aux;
+    aux.ptr=head;
+    return aux;
+}
+template <typename Key, typename Info>
+ typename Ring<Key, Info>::const_Iterator Ring<Key, Info>::endConst() const{
+    const_Iterator aux;
+    aux.ptr=tail;
+    return aux;
+}
+
+
+
+/*seach in privae if we want to use the element struct
+template <typename Key, typename Info>
+bool Ring<Key, Info>::search (const Key& key, int occurance) {
+    element *c, *p;
+    return search (c, p, key, occurance);
+}
+template <typename Key, typename Info>
+bool Ring<Key, Info>::search (element& curr, element& prev, const Key& key, int occurance){
+    if (!any)
+        return false;
+    curr = any->next;
+    prev = any;
+}
+*/
+
+//TODO añadir que si ptr es null en todos los casos
+template <typename Key, typename Info>
+const typename Ring<Key, Info>::const_Iterator Ring<Key, Info>::const_Iterator::operator++(int){
+
+    const_Iterator curr;
+    if (ptr!=nullptr) {
+        ptr = ptr->next;
+    }
+    return *this;
+
+}
+
+template <typename Key, typename Info>
+const typename Ring<Key, Info>::const_Iterator& Ring<Key, Info>::const_Iterator::operator++(){
+
+    const_Iterator a;
+    if (ptr!=nullptr) {
+        ptr = ptr->next;
+    }
+    return a;
+}
+template <typename Key, typename Info>
+const typename Ring<Key, Info>::const_Iterator Ring<Key, Info>::const_Iterator::operator+(int i){
+
+    //  Iterator curr = *this;
+    const_Iterator curr;
+    for(int j=0; j<i; j++)
+        curr++;
+    return curr;
+}
+template <typename Key, typename Info>
+const typename Ring<Key, Info>::const_Iterator& Ring<Key, Info>::const_Iterator::operator--(){
+
+
+    const_Iterator curr;
+    ptr=ptr->prev;
+    return curr;
+}
+template <typename Key, typename Info>
+const typename Ring<Key, Info>::const_Iterator& Ring<Key, Info>::const_Iterator::operator--(int){
+
+
+    ptr=ptr->prev;
+    return *this;
+}
+template <typename Key, typename Info>
+const Info& Ring<Key, Info>::const_Iterator::operator*(){
+
+
+    return ptr->info;
+}
+
+
+template <typename Key, typename Info>
+bool Ring<Key, Info>::const_Iterator::operator==(const Iterator & other){
+
+    return ptr==other.ptr;
+
+}
+template <typename Key, typename Info>
+bool Ring<Key, Info>::const_Iterator::operator!=(const Iterator &other){
+
+    return ptr!=other.ptr;
+}
+template <typename Key, typename Info>
+const Key& Ring<Key, Info>::const_Iterator::getKey(){
+
+
+    return ptr->key;
+}
+template <typename Key, typename Info>
+const Info& Ring<Key, Info>::const_Iterator::getInfo(){
+
+
+    return ptr->info;
+}
+template <typename Key, typename Info>
+bool Ring<Key, Info>::const_Iterator::setKey(const Key &newkey){
+
+    this->ptr->key=newkey;
+    return true;
+}
+
+
+
+
+
 template <typename Key, typename Info>
 bool Ring<Key, Info>::AssertEquals(string wantedOutput)
 {

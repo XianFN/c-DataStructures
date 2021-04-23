@@ -131,6 +131,7 @@ public:
          Iterator& operator--(int);
          Iterator operator+(int);
         Key& getKey();
+        Info& getInfo();
         bool getKey(Key&);
         bool setKey(const Key&);
         bool operator==(const Iterator &other);
@@ -141,21 +142,23 @@ public:
     };
     class const_Iterator {
         const element* ptr;
-        Ring<Key, Info>* owner;
 
-        const_Iterator(element* xtr,Ring<Key, Info>*otr):ptr(xtr){
-            owner = otr;
-        }
     public:
-        const_Iterator (Ring<Key, Info>*otr=nullptr): ptr(nullptr){
-            owner = otr;
+        const_Iterator (): ptr(nullptr){
+
         }
         const Info& operator*();  // std::pair<Key, Info>& operator*();
-        const_Iterator & operator++();
-        const_Iterator operator++(int);
-
-        //const Key& getKey();
+        const const_Iterator & operator++();
+        const const_Iterator operator++(int);
+        const const_Iterator& operator--();
+        const const_Iterator& operator--(int);
+        const const_Iterator operator+(int);
         const Key& getKey();
+        const Info& getInfo();
+        bool getKey(Key&);
+        bool setKey(const Key&);
+
+
 
         bool operator==(const Iterator &);
         bool operator!=(const Iterator &);
@@ -197,6 +200,8 @@ public:
     bool insertAfter (const Key& newKey, const Info& newInfo, Iterator where);
     Iterator begin();
     Iterator end();
+     const_Iterator beginConst() const;
+     const_Iterator endConst() const;
     bool AssertEquals(std::string wantedOutput);
 
 };
