@@ -16,16 +16,13 @@ private:
         element *prev;
     };
     element *head;
-    element *tail;
 
 public:
     class Iterator {
 
         element* ptr;
         Ring<Key, Info>* owner;
-        Iterator(element* xtr,Ring<Key, Info>*otr):ptr(xtr){
-            owner = otr;
-        }
+
     public:
         Iterator(Ring<Key, Info>*otr=nullptr): ptr(nullptr){
             owner = otr;
@@ -102,21 +99,20 @@ public:
     bool remove (const Key& key, int occurance, bool direct);
     void print(bool direct);
     void print2(bool direct);
-    void reverse();
     bool isEmpty() const;
     bool search2(const Key& key, int occurance);
 
     Iterator search3 (const Key& where, int occurance);
-    bool insertAfter (const Key& newKey, const Info& newInfo, Iterator where);
-    bool insertBefore (const Key& newKey, const Info& newInfo, Iterator where);
+    bool insertAfter (const Key& newKey, const Info& newInfo, Iterator where,bool direct);
+    bool insertBefore (const Key& newKey, const Info& newInfo, Iterator where, bool direct);
 
     bool insertAtBeg (Iterator what, bool direct);
     bool insertAtEnd (Iterator what, bool direct);
 
-    Iterator begin();
-    Iterator end();
-    const_Iterator beginConst() const;
-    const_Iterator endConst() const;
+    Iterator begin(bool direct);
+    Iterator end(bool direct);
+    const_Iterator beginConst(bool direct) const;
+    const_Iterator endConst(bool direct) const;
 
 };
 #endif // RING_H

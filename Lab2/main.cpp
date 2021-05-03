@@ -31,15 +31,15 @@ Ring <Key, Info> merge_pos (const Ring <Key, Info>& ring1, int start_pos1, bool 
     typename Ring<Key, Info>::const_Iterator it2;
 
     if (direct1) {
-        it1=ring1.beginConst();
+        it1=ring1.beginConst(true);
     }else{
-        it1=ring1.endConst();
+        it1=ring1.endConst(true);
     }
 
     if (direct2) {
-        it2=ring2.beginConst();
+        it2=ring2.beginConst(true);
     }else{
-        it2=ring2.endConst();
+        it2=ring2.endConst(true);
     }
 
     int originalStartpos1 = start_pos1;
@@ -112,15 +112,15 @@ Ring <Key, Info> merge_key (const Ring <Key, Info>& ring1, const Key& start_key1
     typename Ring<Key, Info>::const_Iterator it2;
 
     if (direct1) {
-        it1=ring1.beginConst();
+        it1=ring1.beginConst(true);
     }else{
-        it1=ring1.endConst();
+        it1=ring1.endConst(true);
     }
 
     if (direct2) {
-        it2=ring2.beginConst();
+        it2=ring2.beginConst(true);
     }else{
-        it2=ring2.endConst();
+        it2=ring2.endConst(true);
     }
 
     int originalOcc1 = occ1;
@@ -639,7 +639,6 @@ void testConstructors(){
     test9Constructors=test7Constructors + test8Constructors;
     cout << "Test 0.7(+operator, empty second List): " << (AssertEquals(test9Constructors,"[6,7][2,5][6,7][2,5]") == 1 ? "true" : "false") << endl;
     test9Constructors.print2(true);
-
     Ring<int, int> test10Constructors;
     test10Constructors = test7Constructors + test9Constructors;
     cout << "Test 0.8(+operator): " << (AssertEquals(test10Constructors,"[6,7][2,5][6,7][2,5][6,7][2,5][6,7][2,5]") == 1 ? "true" : "false") << endl;
@@ -715,7 +714,7 @@ bool AssertEquals(const Ring<Key,Info>& test,string wantedOutput)
     string thisOuput;
     typename Ring<Key, Info>::const_Iterator it;
 
-    it=test.beginConst();
+    it=test.beginConst(true);
 
     if (it == nullptr)
     {

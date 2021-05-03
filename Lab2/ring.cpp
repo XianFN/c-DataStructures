@@ -8,29 +8,35 @@ using namespace std;
 template <typename Key, typename Info>
 Ring<Key, Info>::Ring()
 {
-    tail=head=nullptr;
+    head=nullptr;
 }
 template <typename Key, typename Info>
 Ring<Key, Info>::~Ring()
 {
+
+
     element * temp;
     temp=head;
-    if(tail!=nullptr)
-        tail->next=nullptr;
-    while(temp!=nullptr)
+
+    if (head!=nullptr) {
+         element * last= head->prev;
+
+    while(temp->next!=last)
     {
         temp = temp->next;
         delete head;
         head = temp;
     }
-    head=tail=nullptr;
+    head=head->prev=nullptr;
+    }
+
 }
 template<typename Key, typename Info>
 Ring<Key,Info>::Ring(const Ring<Key,Info> & copy)
 {
-    head=tail=nullptr;
+    head=nullptr;
     typename Ring<Key, Info>::const_Iterator it1;
-    it1=copy.beginConst();
+    it1=copy.beginConst(true);
     int size1=copy.size();
     for (int i=0;i<size1 ;i++ ) {
 
@@ -49,25 +55,30 @@ Ring<Key,Info> & Ring<Key,Info>::operator=(const Ring<Key,Info> &copy)
 
     element * aux;
     aux=head;
-    if(tail!=nullptr)
-        tail->next=nullptr;
+    if(head!=nullptr &&& head->prev!=nullptr){
+           head->prev->next=nullptr;
+    }else{
+    }
+
     while(aux!=nullptr)
     {
+
         aux = aux->next;
         delete head;
         head = aux;
     }
-    head=tail=nullptr;
-
+    head=nullptr;
 
     typename Ring<Key, Info>::const_Iterator it1;
-    it1=copy.beginConst();
+    it1=copy.beginConst(true);
     int size1=copy.size();
+
     for (int i=0;i<size1 ;i++ ) {
 
         insertAtEnd(it1.getKey(),it1.getInfo(),true);
         it1++;
     }
+
     return *this;
 }
 template<typename Key, typename Info>
@@ -75,8 +86,8 @@ bool Ring<Key,Info>::operator==(const Ring<Key,Info> &other){
     bool same = true;
     typename Ring<Key, Info>::const_Iterator it1;
     typename Ring<Key, Info>::const_Iterator it2;
-    it1=beginConst();
-    it2=other.beginConst();
+    it1=beginConst(true);
+    it2=other.beginConst(true);
 
     int size1=size();
     if (size1!=other.size()) {
@@ -103,6 +114,7 @@ bool Ring<Key,Info>::operator!=(const Ring<Key,Info> &other){
 template <typename key, typename info>
 Ring<key, info> operator+(const Ring<key, info>&newRing,const Ring<key, info>&newRing2){
     Ring<key, info> result(newRing);
+
     result += newRing2;
     return result;
 }
@@ -112,7 +124,6 @@ Ring<Key,Info> & Ring<Key,Info>::operator++(){
     if(head)
     {
         head=head->next;
-        tail=tail->next;
     }
     return *this;
 }
@@ -122,7 +133,6 @@ Ring<Key,Info> & Ring<Key,Info>::operator++(int){
     if(head)
     {
         head=head->next;
-        tail=tail->next;
     }
     return a;
 }
@@ -139,7 +149,6 @@ Ring<Key,Info> & Ring<Key,Info>::operator--(){
     if(head)
     {
         head=head->prev;
-        tail=tail->prev;
     }
     return *this;
 }
@@ -149,7 +158,6 @@ Ring<Key,Info> & Ring<Key,Info>::operator--(int){
     if(head)
     {
         head=head->prev;
-        tail=tail->prev;
     }
     return a;
 }
@@ -161,9 +169,8 @@ Ring<Key,Info> & Ring<Key,Info>::operator+= (const Ring<Key, Info>&newRing){
         return *this;
 
     }else{
-
         typename Ring<Key, Info>::const_Iterator it2;
-        it2=newRing.beginConst();
+        it2=newRing.beginConst(true);
         if (!it2.isEmpty()) {
             int size2=newRing.size();
             for (int i=0;i<size2 ;i++ ) {
@@ -186,7 +193,7 @@ Ring<Key,Info> & Ring<Key,Info>::operator-= (const Ring<Key, Info>&subRing){
 
     }else{
         typename Ring<Key, Info>::const_Iterator it2;
-        it2=subRing.beginConst();
+        it2=subRing.beginConst(true);
         if (!it2.isEmpty()) {
             int size2=subRing.size();
             for (int i=0;i<size2 ;i++ ) {
@@ -227,26 +234,6 @@ bool Ring<Key, Info>::isEmpty() const{
     return false;
 }
 
-template <typename Key, typename Info>
-void Ring<Key,Info>::reverse()
-{
-    if (head!=nullptr) {
-
-
-        Ring<Key,Info> tempRing;
-
-        element * temp = head;
-        while(temp!=tail)
-        {
-            tempRing.insertAtBeg(temp->key,temp->info,true);
-
-            temp=temp->next;
-        }
-        tempRing.insertAtBeg(temp->key,temp->info,true);
-
-        *this=tempRing;
-    }
-}
 
 template <typename Key, typename Info>
 typename Ring<Key, Info>::Iterator Ring<Key, Info>::search3(const Key& where, int occurance){
@@ -260,7 +247,7 @@ typename Ring<Key, Info>::Iterator Ring<Key, Info>::search3(const Key& where, in
         if (occ == occurance) {
             return itr(this);
         }
-        return end(); // return Iterator(this);
+        return end();
     }
     /* another way
     int occ=0;
@@ -340,39 +327,38 @@ bool Ring<Key, Info>:: remove(const Key& what, int occurance,bool direct){
 
 
     element * curr;
-    curr=  direct ? head : tail;
+    curr=  direct ? head : head->prev;
     if (curr->key == what) {
         if (occurance==1) {
             if (direct) {
                 if (curr->next==head) {
                     delete curr;
                     head= nullptr;
-                    tail =nullptr;
                     return true;
 
                 }
 
                 element* elementToRemove = curr;
-                head->next->prev= tail;
-                tail->next= head->next;
+                head->next->prev= head->prev;
+                head->prev->next= head->next;
                 head=head->next;
 
                 delete elementToRemove;
 
                 return true;
             }else{
-                if (curr->next==tail) {
+                if (curr->next==head->prev) {
                     delete curr;
                     head= nullptr;
-                    tail =nullptr;
+
                     return true;
 
                 }
 
                 element* elementToRemove = curr;
-                tail->prev->next= head;
-                head->prev= tail->prev;
-                tail=tail->prev;
+                head->prev->prev->next= head;
+                head->prev= head->prev->prev;
+
 
                 delete elementToRemove;
 
@@ -399,12 +385,12 @@ bool Ring<Key, Info>:: remove(const Key& what, int occurance,bool direct){
 
     }
     if (direct) {
-        if (curr==tail) {
+        if (curr==head->prev) {
 
             element* elementToRemove = curr;
             curr->prev->next= head;
-            tail=curr->prev;
-            head->prev= tail->prev;
+
+            head->prev= head->prev->prev;
 
 
             delete elementToRemove;
@@ -425,8 +411,8 @@ bool Ring<Key, Info>:: remove(const Key& what, int occurance,bool direct){
         if (curr==head) {
 
             element* elementToRemove = curr;
-            head->next->prev= tail;
-            tail->next= head->next;
+            head->next->prev= head->prev;
+            head->prev->next= head->next;
             head=curr->next;
 
             delete elementToRemove;
@@ -465,12 +451,12 @@ bool Ring<Key, Info>::insertAtBeg (const Key& newKey, const Info& newInfo,bool d
         {
             temp->next = temp;
             temp->prev = temp;
-            head=tail=temp;
+            head=temp;
         }else{
 
             temp->next = head;
-            temp->prev = tail;
-            tail->next=temp;
+            temp->prev = head->prev;
+            head->prev->next=temp;
             head->prev=temp;
             head=temp;
         }
@@ -494,12 +480,12 @@ bool Ring<Key, Info>::insertAtBeg (Iterator what,bool direct){
         {
             temp->next = temp;
             temp->prev = temp;
-            head=tail=temp;
+            head=temp;
         }else{
 
             temp->next = head;
-            temp->prev = tail;
-            tail->next=temp;
+            temp->prev = head->prev;
+            head->prev->next=temp;
             head->prev=temp;
             head=temp;
         }
@@ -523,14 +509,13 @@ bool Ring<Key, Info>::insertAtEnd (const Key& newKey, const Info& newInfo,bool d
         {
             temp->next = temp;
             temp->prev = temp;
-            head=tail=temp;
+            head=temp;
         }else{
 
             temp->next = head;
-            temp->prev = tail;
-            tail->next=temp;
+            temp->prev = head->prev;
+            head->prev->next=temp;
             head->prev=temp;
-            tail=temp;
 
         }
         return true;
@@ -554,14 +539,14 @@ bool Ring<Key, Info>::insertAtEnd (Iterator what,bool direct){
         {
             temp->next = temp;
             temp->prev = temp;
-            head=tail=temp;
+            head=temp;
         }else{
 
             temp->next = head;
-            temp->prev = tail;
-            tail->next=temp;
+            temp->prev = head->prev;
+            head->prev->next=temp;
             head->prev=temp;
-            tail=temp;
+
 
         }
         return true;
@@ -587,7 +572,7 @@ bool Ring<Key, Info>::insertAfter(const Key& newKey, const Info& newInfo, const 
 
 
     element * curr;
-    curr=  direct ? head : tail;
+    curr=  direct ? head : head->prev;
 
     while (occurance!=0||curr->key!=where) {
 
@@ -603,7 +588,7 @@ bool Ring<Key, Info>::insertAfter(const Key& newKey, const Info& newInfo, const 
         }
 
     };
-    if (curr==tail) {
+    if (curr==head->prev) {
 
         insertAtEnd(newKey,newInfo,true);
 
@@ -651,7 +636,7 @@ bool Ring<Key, Info>::insertBefore(const Key& newKey, const Info& newInfo, const
 
 
     element * curr;
-    curr=  direct ? head : tail;
+    curr=  direct ? head : head->prev;
 
     while (occurance!=0||curr->key!=where) {
 
@@ -691,7 +676,7 @@ bool Ring<Key, Info>::insertBefore(const Key& newKey, const Info& newInfo, const
 }
 
 template <typename Key, typename Info>
-bool Ring<Key, Info>::insertAfter(const Key& newKey, const Info& newInfo, Iterator where){
+bool Ring<Key, Info>::insertAfter(const Key& newKey, const Info& newInfo, Iterator where,bool direct){
 
     if (where == end()) {
         return false;
@@ -699,6 +684,9 @@ bool Ring<Key, Info>::insertAfter(const Key& newKey, const Info& newInfo, Iterat
     if (where.owner != this) { // the iterator is from another Ring
         return false;
     }
+    if (!direct) {
+        insertBefore(newKey,newInfo,where,!direct);
+    }else{
 
     element* nptr=new element ;
     nptr->key=newKey;
@@ -710,11 +698,11 @@ bool Ring<Key, Info>::insertAfter(const Key& newKey, const Info& newInfo, Iterat
     etr->next->prev=nptr;
     etr->next = nptr;
     return true;
-
+}
 }
 
 template <typename Key, typename Info>
-bool Ring<Key, Info>::insertBefore(const Key& newKey, const Info& newInfo, Iterator where){
+bool Ring<Key, Info>::insertBefore(const Key& newKey, const Info& newInfo, Iterator where, bool direct){
 
     if (where == end()) {
         return false;
@@ -722,6 +710,11 @@ bool Ring<Key, Info>::insertBefore(const Key& newKey, const Info& newInfo, Itera
     if (where.owner != this) { // the iterator is from another Ring
         return false;
     }
+
+    if (!direct) {
+        insertAfter(newKey,newInfo,where,!direct);
+    }else{
+
 
     element* nptr=new element ;
     nptr->key=newKey;
@@ -733,6 +726,7 @@ bool Ring<Key, Info>::insertBefore(const Key& newKey, const Info& newInfo, Itera
     etr->prev->next=nptr;
     etr->prev = nptr;
     return true;
+    }
 
 }
 template <typename Key, typename Info>
@@ -748,13 +742,13 @@ void Ring<Key, Info>::print(bool direct){
             } while (curr!=head);
         }
     }else{
-        curr=tail;
+        curr=head->prev;
         if (curr!= nullptr) {
             do {
                 cout << curr->info <<endl;
 
                 curr=curr->prev;
-            } while (curr!=tail);
+            } while (curr!=head->prev);
         }
     }
 
@@ -776,13 +770,13 @@ void Ring<Key, Info>::print2(bool direct){
             cout<<endl;
         }
     }else{
-        curr=tail;
+        curr=head->prev;
         if (curr!= nullptr) {
             do {
                 cout <<"["<< curr->key<<","<<curr->info<<"]";
 
                 curr=curr->prev;
-            } while (curr!=tail);
+            } while (curr!=head->prev);
             cout<<endl;
         }
     }
@@ -806,13 +800,21 @@ Ring<Key, Info>::Iterator::Iterator(const Ring<Key, Info>&newIt ){
 }
 
 template <typename Key, typename Info>
-typename Ring<Key, Info>::Iterator Ring<Key, Info>::begin(){
+typename Ring<Key, Info>::Iterator Ring<Key, Info>::begin(bool direct){
+    if (!direct) {
+        endConst(!direct);
+    }else{
 
     return Iterator(head,this);
+    }
 }
 template <typename Key, typename Info>
-typename Ring<Key, Info>::Iterator Ring<Key, Info>::end(){
-    return Iterator(tail,this);
+typename Ring<Key, Info>::Iterator Ring<Key, Info>::end(bool direct){
+        if (!direct) {
+            endConst(!direct);
+        }else{
+    return Iterator(head->prev,this);
+        }
 }
 
 
@@ -918,7 +920,7 @@ template <typename Key, typename Info>
 typename Ring<Key, Info>::const_Iterator associeteWith(const Ring<Key, Info>&newIt ){
 
     typename Ring<Key, Info>::const_Iterator it1;
-    it1=newIt.beginConst();
+    it1=newIt.beginConst(true);
 
     return it1;
 }
@@ -929,16 +931,24 @@ Ring<Key, Info>::const_Iterator::const_Iterator(const Ring<Key, Info>&newIt ){
 }
 
 template <typename Key, typename Info>
-typename Ring<Key, Info>::const_Iterator Ring<Key, Info>::beginConst() const{
+typename Ring<Key, Info>::const_Iterator Ring<Key, Info>::beginConst(bool direct) const{
+    if (!direct) {
+        endConst(!direct);
+    }else{
     const_Iterator aux;
     aux.ptr=head;
     return aux;
+    }
 }
 template <typename Key, typename Info>
-typename Ring<Key, Info>::const_Iterator Ring<Key, Info>::endConst() const{
+typename Ring<Key, Info>::const_Iterator Ring<Key, Info>::endConst(bool direct) const{
+        if (!direct) {
+            endConst(!direct);
+        }else{
     const_Iterator aux;
-    aux.ptr=tail;
+    aux.ptr=head->prev;
     return aux;
+        }
 }
 
 
