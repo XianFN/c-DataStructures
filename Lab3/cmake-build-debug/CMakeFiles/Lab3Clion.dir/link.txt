@@ -1,0 +1,1 @@
+/usr/bin/c++ -g CMakeFiles/Lab3Clion.dir/main.cpp.o CMakeFiles/Lab3Clion.dir/Dictionary.cpp.o -o Lab3Clion 
