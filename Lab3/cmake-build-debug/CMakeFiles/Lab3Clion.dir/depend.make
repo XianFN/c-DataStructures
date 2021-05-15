@@ -7,4 +7,9 @@ CMakeFiles/Lab3Clion.dir/Dictionary.cpp.o: ../Dictionary.h
 CMakeFiles/Lab3Clion.dir/main.cpp.o: ../Dictionary.cpp
 CMakeFiles/Lab3Clion.dir/main.cpp.o: ../Dictionary.h
 CMakeFiles/Lab3Clion.dir/main.cpp.o: ../main.cpp
+CMakeFiles/Lab3Clion.dir/main.cpp.o: ../ring.cpp
+CMakeFiles/Lab3Clion.dir/main.cpp.o: ../ring.h
+
+CMakeFiles/Lab3Clion.dir/ring.cpp.o: ../ring.cpp
+CMakeFiles/Lab3Clion.dir/ring.cpp.o: ../ring.h
 

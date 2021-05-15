@@ -6,6 +6,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 set(CMAKE_DEPENDS_CHECK_CXX
   "/home/xian/pc/erasmus/SEMESTER2/EADS/TASK3/Lab3Clion/Dictionary.cpp" "/home/xian/pc/erasmus/SEMESTER2/EADS/TASK3/Lab3Clion/cmake-build-debug/CMakeFiles/Lab3Clion.dir/Dictionary.cpp.o"
   "/home/xian/pc/erasmus/SEMESTER2/EADS/TASK3/Lab3Clion/main.cpp" "/home/xian/pc/erasmus/SEMESTER2/EADS/TASK3/Lab3Clion/cmake-build-debug/CMakeFiles/Lab3Clion.dir/main.cpp.o"
+  "/home/xian/pc/erasmus/SEMESTER2/EADS/TASK3/Lab3Clion/ring.cpp" "/home/xian/pc/erasmus/SEMESTER2/EADS/TASK3/Lab3Clion/cmake-build-debug/CMakeFiles/Lab3Clion.dir/ring.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 

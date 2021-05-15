@@ -1,11 +1,14 @@
 
 #include "Dictionary.cpp"
+#include "ring.cpp"
 #include <algorithm>
 #include <cassert>
 #include <ctime>
 #include <iostream>
 #include <random>
 #include <vector>
+#include <fstream>
+#include <sstream>
 
 
 using namespace std;
@@ -16,14 +19,47 @@ mt19937 RNG;
 
 void initRng();
 void tests();
+void test();
+void SplitString(string s, vector<string> &v);
+void PrintVector(vector<string> v);
+string removeSymbols(string lineString);
+Dictionary <string, int>& counter (const string& fileName);
+Ring <int, string>&  listing (const Dictionary <string, int>& Dict);
+
 vector<int> randomVector(const int size, const int start, const int stop);
 void testRetrieveEntry(const int entry,Dictionary<int,int>& tree);
+Ring<int,string> recursiveDicToRing(Node<string,int>* node, Ring<int,string> ring);
 
 // template <class T>
 void print(const int& value);
 
 int main() {
-    tests();
+
+    /*
+    Dictionary<string,int>& tree = counter("Text books/Academic Regulations at the Warsaw University of Technology (ANSI).txt");
+    tree.preOrder2();
+    tree.printGraph();
+*/
+    Dictionary<string,int> tree;
+    tree.insert("hola");
+    tree.insert("prueba");
+    tree.insert("hola");
+    tree.insert("zz");
+    tree.insert("aaa");
+    tree.insert("aaa");
+    tree.insert("b");
+
+    tree.printGraph();
+
+
+    Ring<int,string>& ring= listing(tree);
+    cout<<"f";
+    ring.print2(true);
+
+
+   // counter("Text books/The Jungle Book by Rudyard Kipling (ANSI).txt");
+    //counter("Text books/El camino de los reyes - Brandon Sanderson.txt");
+    //test();
     /*
     Dictionary<int,int> treeRoot;
     int num;
@@ -46,6 +82,188 @@ int main() {
     cout << endl;
 */
     return 0;
+}
+ Dictionary <string, int>& counter (const string& fileName) {
+
+    static Dictionary<string, int> tree;
+    string myText;
+
+// Read from the text file
+    ifstream MyReadFile(fileName);
+
+// Use a while loop together with the getline() function to read the file line by line
+    if (MyReadFile.is_open())
+    {
+        while ( getline (MyReadFile,myText) )
+        {
+            string line = removeSymbols(myText);
+
+            vector<string>words;
+
+            SplitString(line, words);
+
+            for(string word : words){
+                if (word==" " || word==""|| isdigit(word[0])){
+
+                }else{
+                    tree.insert(word);
+                    //cout<<word<<" ";
+                }
+            }
+         //   cout<<endl;
+
+        }
+        MyReadFile.close();
+    }
+
+    else cout << "Unable to open file";
+
+    return tree;
+
+
+
+}
+string removeSymbols(string lineString){
+
+
+    for (int i = 0; i < lineString.size(); i++) {
+
+        // Finding the character whose
+        // ASCII value fall under this
+        // range
+        if (!isalnum(lineString[i]) && lineString[i] != ' ')
+        {
+            // erase function to erase
+            // the character
+            lineString.erase(i, 1);
+            i--;
+        }
+    }
+    return lineString;
+
+    /*
+    string ret;
+
+    string chars = "#!,.?¿¡-_')(:;";
+
+    for (char c: chars) {
+        lineString.erase(std::remove(lineString.begin(), lineString.end(), c), lineString.end());
+    }
+
+    std::cout << lineString;
+
+    return lineString;
+*/
+
+}
+void SplitString(string s, vector<string> &v){
+
+    string temp = "";
+    for(int i=0;i<s.length();++i){
+
+        if(s[i]==' '){
+            v.push_back(temp);
+            temp = "";
+        }
+        else{
+            temp.push_back(s[i]);
+        }
+
+    }
+    v.push_back(temp);
+
+}
+
+void PrintVector(vector<string> v){
+    for(int i=0;i<v.size();++i)
+        cout<<v[i]<<endl;
+    cout<<"\n";
+}
+Ring <int,string>&  listing (const Dictionary <string,int>& Dict){
+
+    static Ring<int,string> ret;
+    cout<<"f";
+    ret=recursiveDicToRing(Dict.getRoot(),ret);
+    cout<<"f";
+    return ret;
+}
+Ring<int,string> recursiveDicToRing(Node<string,int>* node, Ring<int,string> ring){
+
+    if (node != NULL) {
+
+        typename Ring<int, string>::Iterator it;
+        it=ring.begin(true);
+        typename Ring<int, string>::Iterator fin;
+        fin=ring.end(true);
+        if (it.isEmpty()){
+            ring.insertAtBeg(node->info,node->key,true);
+        }else {
+            while (it.getKey() < node->info && it.operator!=(fin) ) {
+
+                it++;
+            }
+            if (it.getKey() == node->info ){
+                while (it.getInfo() < node->key && it.operator!=(fin) ) {
+
+                    it++;
+                }
+                if (it.operator==(fin)){
+                    ring.insertAtEnd(node->info,node->key,true);
+                }else{
+                    ring.insertBefore(node->info,node->key,it,true);
+
+                }
+
+            }else{
+                if (it.operator==(fin)){
+                    ring.insertAtEnd(node->info,node->key,true);
+                }else{
+                    ring.insertBefore(node->info,node->key,it,true);
+
+                }
+            }
+
+        }
+        if (node->left != NULL){
+            recursiveDicToRing(node->left, ring);
+        }
+        if (node->right != NULL){
+            recursiveDicToRing(node->right, ring);
+        }
+    }
+
+}
+
+void test(){
+    Dictionary<string,int> tree;
+
+    assert(tree.isEmpty() && "FAILED\n");
+    cout <<"Empty tree: PASSED\n";
+
+
+    assert(tree.height() == 0 && "FAILED: New tree height isn't 0\n");
+    cout << "A new tree's height is zero: PASSED\n";
+
+    assert(tree.leaves() == 0 && "FAILED: New tree should have no leaves\n");
+    cout << "A new tree should have no leaves: PASSED\n";
+
+    assert(tree.length() == 0 && "FAILED: New tree should have no nodes\n");
+    cout << "A new tree should have no nodes: PASSED\n";
+
+    assert(tree.insert("test") && "FAILED: Should be able to add an entry\n");
+    cout << "Should be able to add a new entry to the empty tree: PASSED\n";
+
+    tree.preOrder2();
+
+    assert(tree.insert("test") && "FAILED: Should be able to add an entry\n");
+    cout << "Should be able to add a new entry to the empty tree: PASSED\n";
+
+    tree.inorderTraversal();
+    tree.preOrder2();
+
+
+
+
 }
 void tests()
 {

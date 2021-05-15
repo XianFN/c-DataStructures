@@ -11,14 +11,20 @@ iostream
 -
 Dictionary.h
 /home/xian/pc/erasmus/SEMESTER2/EADS/TASK3/Lab3Clion/Dictionary.h
+vector
+-
 
 /home/xian/pc/erasmus/SEMESTER2/EADS/TASK3/Lab3Clion/Dictionary.h
 iostream
+-
+vector
 -
 
 /home/xian/pc/erasmus/SEMESTER2/EADS/TASK3/Lab3Clion/main.cpp
 Dictionary.cpp
 /home/xian/pc/erasmus/SEMESTER2/EADS/TASK3/Lab3Clion/Dictionary.cpp
+ring.cpp
+/home/xian/pc/erasmus/SEMESTER2/EADS/TASK3/Lab3Clion/ring.cpp
 algorithm
 -
 cassert
@@ -30,5 +36,25 @@ iostream
 random
 -
 vector
+-
+fstream
+-
+sstream
+-
+
+/home/xian/pc/erasmus/SEMESTER2/EADS/TASK3/Lab3Clion/ring.cpp
+ring.h
+/home/xian/pc/erasmus/SEMESTER2/EADS/TASK3/Lab3Clion/ring.h
+iostream
+-
+string
+-
+sstream
+-
+
+/home/xian/pc/erasmus/SEMESTER2/EADS/TASK3/Lab3Clion/ring.h
+iostream
+-
+string
 -
 

@@ -1,6 +1,7 @@
 file(REMOVE_RECURSE
   "CMakeFiles/Lab3Clion.dir/Dictionary.cpp.o"
   "CMakeFiles/Lab3Clion.dir/main.cpp.o"
+  "CMakeFiles/Lab3Clion.dir/ring.cpp.o"
   "Lab3Clion"
   "Lab3Clion.pdb"
 )

@@ -196,6 +196,33 @@ main.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Lab3Clion.dir/build.make CMakeFiles/Lab3Clion.dir/main.cpp.s
 .PHONY : main.cpp.s
 
+ring.o: ring.cpp.o
+
+.PHONY : ring.o
+
+# target to build an object file
+ring.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Lab3Clion.dir/build.make CMakeFiles/Lab3Clion.dir/ring.cpp.o
+.PHONY : ring.cpp.o
+
+ring.i: ring.cpp.i
+
+.PHONY : ring.i
+
+# target to preprocess a source file
+ring.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Lab3Clion.dir/build.make CMakeFiles/Lab3Clion.dir/ring.cpp.i
+.PHONY : ring.cpp.i
+
+ring.s: ring.cpp.s
+
+.PHONY : ring.s
+
+# target to generate assembly for a file
+ring.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Lab3Clion.dir/build.make CMakeFiles/Lab3Clion.dir/ring.cpp.s
+.PHONY : ring.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -211,6 +238,9 @@ help:
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
+	@echo "... ring.o"
+	@echo "... ring.i"
+	@echo "... ring.s"
 .PHONY : help
 
 

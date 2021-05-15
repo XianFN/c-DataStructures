@@ -6,6 +6,9 @@
 //
 #include <iostream>
 #include "Dictionary.h"
+#include <vector>
+using namespace std;
+
 
 
 
@@ -109,6 +112,121 @@ void Dictionary<Key,Info>::preorderTraversal() const
 {
     preorder(root, print);
 }
+template<typename Key, typename Info>
+void Dictionary<Key,Info>::preOrder2() const
+{
+
+    if (root != NULL)
+    {
+        cout<<endl;
+        preOrder2It(root);
+    }
+}
+template<typename Key, typename Info>
+void Dictionary<Key,Info>::preOrder2It(Node<Key,Info>* node) const
+{
+    if (node != NULL)
+    {
+        cout <<"["<< node->key << ","<<node->info << "] ";
+        preOrder2It(node->left);
+        preOrder2It(node->right);
+    }
+}
+template<typename Key, typename Info>
+void Dictionary<Key,Info>::printGraph() const
+{
+
+    if (root != NULL)
+    {
+        vector<int> indexVector(this->length(), 0);;
+        cout<<endl;
+        printGraphIt(root,0,indexVector);
+    }
+}
+template<typename Key, typename Info>
+ void Dictionary<Key,Info>::printGraphIt(Node<Key,Info>* node,int ident, vector<int> indexVector) const{
+
+    if(ident > 0)
+    {
+        for(int i = 0; i < ident - 1; ++i)
+        {
+            printf(indexVector[i] ? "│   " : "    ");
+        }
+        printf(indexVector[ident-1] ? "├── " : "└── ");
+    }
+
+    if(! node)
+    {
+        printf("(null)\n");
+        return;
+    }
+
+    cout<<node->key<<"("<<node->info<<")"<<endl;
+    if(!node->left && !node->right)
+    {
+        return;
+    }
+
+    indexVector[ident] = 1;
+    printGraphIt(node->left, ident + 1,indexVector);
+    indexVector[ident] = 0;
+    printGraphIt(node->right, ident + 1,indexVector);
+
+}
+template<typename Key, typename Info>
+void Dictionary<Key,Info>::printGraphHorizontal() const
+{
+
+    if (root != NULL)
+    {
+        vector<int> indexVector(this->length(), 0);;
+        cout<<endl;
+        printGraphHorizontalIt(root,0,indexVector,root->height,this->length()/2,this->length()/2);
+    }
+}
+template<typename Key, typename Info>
+void Dictionary<Key,Info>::printGraphHorizontalIt(Node<Key,Info>* node,int ident, vector<int> indexVector,int currHeigth,int horizontalIndex,int actualSpaces) const{
+
+    /*
+    if(ident > 0)
+    {
+        if (node->height==currHeigth){
+            for(int i = 0; i < ident - 1; ++i) {
+
+            }
+
+        }else{
+            cout<<endl;
+        }
+
+
+        for(int i = 0; i < ident - 1; ++i)
+        {
+            printf(indexVector[i] ? "│   " : "    ");
+        }
+        printf(indexVector[ident-1] ? "├── " : "└── ");
+    }
+
+    if(! node)
+    {
+        printf("(null)\n");
+        return;
+    }
+
+    cout<<node->key<<"("<<node->info<<")"<<endl;
+    if(!node->left && !node->right)
+    {
+        return;
+    }
+
+    indexVector[ident] = 1;
+    printGraphIt(node->left, ident + 1,indexVector);
+    indexVector[ident] = 0;
+    printGraphIt(node->right, ident + 1,indexVector);
+
+     */
+}
+
 
 // Removes an item from the AVL tree
 template<typename Key, typename Info>
@@ -120,6 +238,16 @@ bool Dictionary<Key,Info>::remove(const Key& what)
 }
 
 
+template<typename Key, typename Info>
+Node<Key,Info>* Dictionary<Key,Info>::getRoot() const{
+    cout<<"endl";
+    if (root){
+        return root;
+    }else{
+        return new Node<Key,Info>();
+    }
+
+}
 // Retrieves a info from the tree
 template<typename Key, typename Info>
 Info Dictionary<Key,Info>::getInfo(const Key& value)
