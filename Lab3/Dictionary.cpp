@@ -1,6 +1,4 @@
-//
-// Created by xian on 10/05/2021.
-//
+
 //
 // Created by xian on 10/05/2021.
 //
@@ -10,9 +8,6 @@
 using namespace std;
 
 
-
-
-// Constructor
 template<typename Key, typename Info>
 Dictionary<Key,Info>::Dictionary()
 {
@@ -21,14 +16,14 @@ Dictionary<Key,Info>::Dictionary()
 }
 
 
-// Destructor
+
 template<typename Key, typename Info>
 Dictionary<Key,Info>::~Dictionary()
 {
     clear();
 }
 
-// Clears the AVL tree of all items
+
 template<typename Key, typename Info>
 void Dictionary<Key,Info>::clear()
 {
@@ -36,36 +31,56 @@ void Dictionary<Key,Info>::clear()
     numNodes = 0;
 }
 
-// Determines if a value is in the AVL tree
+
 template<typename Key, typename Info>
 bool Dictionary<Key,Info>::search(const Key& value)
 {
     return nullptr != getNode(root, value);
 }
 
-// Returns the height of the tree
+
 template<typename Key, typename Info>
 int Dictionary<Key,Info>::height() const
 {
     return height(root);
 }
 
-// Traverses a subtree in inorder and processes the nodes using the given
-// callback
+template<typename Key, typename Info>
+void Dictionary<Key,Info>::inorder2() const
+{
+
+    if (root != NULL)
+    {
+        cout<<endl;
+        inorder2It(root);
+    }
+}
+template<typename Key, typename Info>
+void Dictionary<Key,Info>::inorder2It(Node<Key,Info>* node) const
+{
+    if (node != NULL)
+    {
+        cout <<"["<< node->key << ","<<node->info << "] ";
+        inorder2It(node->right);
+        inorder2It(node->left);
+
+    }
+}
+
 template<typename Key, typename Info>
 void Dictionary<Key,Info>::inorder(void callback(const Key& where)) const
 {
     inorder(root, callback);
 }
 
-// Traverses the AVL tree and prints the items in it in inorder
+
 template<typename Key, typename Info>
 void Dictionary<Key,Info>::inorderTraversal() const
 {
     inorder(root, print);
 }
 
-// Inserts an item into the ALV tree
+
 template<typename Key, typename Info>
 bool Dictionary<Key,Info>::insert(const Key& newKey)
 {
@@ -77,36 +92,34 @@ bool Dictionary<Key,Info>::insert(const Key& newKey)
     return true;
 }
 
-// Tests if the tree is empty
+
 template<typename Key, typename Info>
 bool Dictionary<Key,Info>::isEmpty() const
 {
     return root == nullptr;
 }
 
-// Returns the number of leaves in the AVL tree
+
 template<typename Key, typename Info>
 int Dictionary<Key,Info>::leaves() const
 {
     return leaves(root);
 }
 
-// Returns the length (number of nodes) in the AVL tree
+
 template<typename Key, typename Info>
 int Dictionary<Key,Info>::length() const
 {
     return numNodes;
 }
 
-// Traverses a subtree in preorder and processes the nodes using the given
-// callback
+
 template<typename Key, typename Info>
 void Dictionary<Key,Info>::preorder(void callback(const Key& where)) const
 {
     preorder(root, callback);
 }
 
-// Traverses the AVL tree and prints the items in preorder
 template<typename Key, typename Info>
 void Dictionary<Key,Info>::preorderTraversal() const
 {
@@ -173,61 +186,6 @@ template<typename Key, typename Info>
     printGraphIt(node->right, ident + 1,indexVector);
 
 }
-template<typename Key, typename Info>
-void Dictionary<Key,Info>::printGraphHorizontal() const
-{
-
-    if (root != NULL)
-    {
-        vector<int> indexVector(this->length(), 0);;
-        cout<<endl;
-        printGraphHorizontalIt(root,0,indexVector,root->height,this->length()/2,this->length()/2);
-    }
-}
-template<typename Key, typename Info>
-void Dictionary<Key,Info>::printGraphHorizontalIt(Node<Key,Info>* node,int ident, vector<int> indexVector,int currHeigth,int horizontalIndex,int actualSpaces) const{
-
-    /*
-    if(ident > 0)
-    {
-        if (node->height==currHeigth){
-            for(int i = 0; i < ident - 1; ++i) {
-
-            }
-
-        }else{
-            cout<<endl;
-        }
-
-
-        for(int i = 0; i < ident - 1; ++i)
-        {
-            printf(indexVector[i] ? "│   " : "    ");
-        }
-        printf(indexVector[ident-1] ? "├── " : "└── ");
-    }
-
-    if(! node)
-    {
-        printf("(null)\n");
-        return;
-    }
-
-    cout<<node->key<<"("<<node->info<<")"<<endl;
-    if(!node->left && !node->right)
-    {
-        return;
-    }
-
-    indexVector[ident] = 1;
-    printGraphIt(node->left, ident + 1,indexVector);
-    indexVector[ident] = 0;
-    printGraphIt(node->right, ident + 1,indexVector);
-
-     */
-}
-
-
 // Removes an item from the AVL tree
 template<typename Key, typename Info>
 bool Dictionary<Key,Info>::remove(const Key& what)
@@ -240,7 +198,6 @@ bool Dictionary<Key,Info>::remove(const Key& what)
 
 template<typename Key, typename Info>
 Node<Key,Info>* Dictionary<Key,Info>::getRoot() const{
-    cout<<"endl";
     if (root){
         return root;
     }else{
@@ -248,25 +205,22 @@ Node<Key,Info>* Dictionary<Key,Info>::getRoot() const{
     }
 
 }
-// Retrieves a info from the tree
+
 template<typename Key, typename Info>
 Info Dictionary<Key,Info>::getInfo(const Key& value)
 {
-    // Attempt to find the value. If it can't be found (node is nullptr)
-    // then throw an error. Otherwise, return the value
+
     Node<Key,Info>* node = getNode(root, value);
     if (node == nullptr)
     {
-        // Enforce the precondition that the value should be in the tree
+
         throw NoSuchValue();
     }
 
     return node->info;
 }
 
-// Private methods
-// Balances the AVL tree, if necessary. If a node's balance factor is greater
-// than 1, it is unbalanced and will balanced. Otherwise, nothing will change
+
 template<typename Key, typename Info>
 Node<Key,Info>* Dictionary<Key,Info>::balance(Node<Key,Info>*& tree)
 {
@@ -311,7 +265,7 @@ Node<Key,Info>* Dictionary<Key,Info>::balanceFromLeft(Node<Key,Info>*& tree)
     }
 }
 
-// Balances a subtree from the right
+
 template<typename Key, typename Info>
 Node<Key,Info>* Dictionary<Key,Info>::balanceFromRight(Node<Key,Info>*& tree)
 {
@@ -330,7 +284,7 @@ Node<Key,Info>* Dictionary<Key,Info>::balanceFromRight(Node<Key,Info>*& tree)
     }
 }
 
-// Clears a subtree of all its contents
+
 template<typename Key, typename Info>
 void Dictionary<Key,Info>::clear(Node<Key,Info>*& tree)
 {
@@ -350,7 +304,7 @@ void Dictionary<Key,Info>::clear(Node<Key,Info>*& tree)
     }
 }
 
-// Deletes a node from a subtree
+
 template<typename Key, typename Info>
 Node<Key,Info>* Dictionary<Key,Info>::deleteNode(Node<Key,Info>*& node)
 {
@@ -373,7 +327,6 @@ Node<Key,Info>* Dictionary<Key,Info>::deleteNode(Node<Key,Info>*& node)
         // 1. find the logical predecessor (largest node of left subtree)
         // 2. replace node that we're deleting with logical predecessor
         // 3. delete the node
-        //TODO arregar delete, que se a infor e mais de 0 so reste un
         toDelete = getmax(node->left);
         node->key = toDelete->key;
         node->left = removemax(node->left);
@@ -385,22 +338,18 @@ Node<Key,Info>* Dictionary<Key,Info>::deleteNode(Node<Key,Info>*& node)
     return node;
 }
 
-// Calculates the difference between the heights of the left and right subtrees
-// rooted at the given node
 template<typename Key, typename Info>
 int Dictionary<Key,Info>::difference(const Node<Key,Info>* tree) const
 {
     return height(tree->left) - height(tree->right);
 }
 
-// Finds a value in a subtree
 template<typename Key, typename Info>
 Node<Key,Info>* Dictionary<Key,Info>::find(Node<Key,Info>* tree, const Key& value) const
 {
     return nullptr;
 }
 
-// Finds the node with the maximum value in a subtree
 template<typename Key, typename Info>
 Node<Key,Info>* Dictionary<Key,Info>::getmax(Node<Key,Info>*& tree)
 {
@@ -416,7 +365,7 @@ Node<Key,Info>* Dictionary<Key,Info>::getmax(Node<Key,Info>*& tree)
     }
 }
 
-// Calculates the height of the subtree rooted at the given node
+
 template<typename Key, typename Info>
 int Dictionary<Key,Info>::height(const Node<Key,Info>* tree) const
 {
@@ -433,8 +382,7 @@ int Dictionary<Key,Info>::height(const Node<Key,Info>* tree) const
     return 1 + (leftHeight > rightHeight ? leftHeight : rightHeight);
 }
 
-// Traverses a subtree in inorder and processes the value using the given
-// callback function
+
 template<typename Key, typename Info>
 void Dictionary<Key,Info>::inorder(Node<Key,Info>* tree,
                                    void callback(const Key &where)) const
@@ -447,14 +395,13 @@ void Dictionary<Key,Info>::inorder(Node<Key,Info>* tree,
     }
 }
 
-// Inserts a new node into a subtree
+
 template<typename Key, typename Info>
 Node<Key,Info>* Dictionary<Key,Info>::insertIntoAVL(Node<Key,Info>*& tree,
                                                     Node<Key,Info>*& newNode,
                                                     bool& isTaller)
 {
-    // use convention that values less than or equal to the value
-    // in a node belong in the left subtree
+
     if (tree == nullptr)
     {
         tree = newNode;
@@ -477,7 +424,6 @@ Node<Key,Info>* Dictionary<Key,Info>::insertIntoAVL(Node<Key,Info>*& tree,
     return tree;
 }
 
-// Counts the number of leaves in a subtree
 template<typename Key, typename Info>
 int Dictionary<Key,Info>::leaves(const Node<Key,Info>* tree) const
 {
@@ -496,8 +442,6 @@ int Dictionary<Key,Info>::leaves(const Node<Key,Info>* tree) const
     }
 }
 
-// Traverses a subtree in preorder and processes the value using the given
-// callback function
 template<typename Key, typename Info>
 void Dictionary<Key,Info>::preorder(Node<Key,Info>* tree,
                                     void callback(const Key& value)) const
@@ -510,36 +454,34 @@ void Dictionary<Key,Info>::preorder(Node<Key,Info>* tree,
     }
 }
 
-// Prints the value to the terminal
 template<typename Key, typename Info>
 void Dictionary<Key,Info>::print(const Key& where)
 {
     std::cout << where << " ";
 }
 
-// Removes a value from a subtree
 template<typename Key, typename Info>
 Node<Key,Info>* Dictionary<Key,Info>::remove(Node<Key,Info>*& tree, const Key& value, bool& flag)
 {
-    // didn't find the value
+
     if (tree == nullptr)
     {
         flag = false;
         return tree;
     }
 
-    // keep traversing the subtree until we find the correct node
-    if (tree->key < value) // go to the right subtree
+
+    if (tree->key < value)
     {
         tree->right = remove(tree->right, value, flag);
         tree = balance(tree);
     }
-    else if (tree->key > value) // go to the left subtree
+    else if (tree->key > value)
     {
         tree->left = remove(tree->left, value, flag);
         tree = balance(tree);
     }
-    else // found the value, delete it
+    else
     {
         flag = true;
         numNodes--;
@@ -549,8 +491,7 @@ Node<Key,Info>* Dictionary<Key,Info>::remove(Node<Key,Info>*& tree, const Key& v
     return tree;
 }
 
-// Removes (not delete!) the node with the maximum value in a subtree pointer
-// to it
+
 template<typename Key, typename Info>
 Node<Key,Info>* Dictionary<Key,Info>::removemax(Node<Key,Info>*& tree)
 {
@@ -565,11 +506,11 @@ Node<Key,Info>* Dictionary<Key,Info>::removemax(Node<Key,Info>*& tree)
     }
 }
 
-// Retrieves an item from a subtree
+
 template<typename Key, typename Info>
 Node<Key,Info>* Dictionary<Key,Info>::getNode(Node<Key,Info>* tree, const Key& where)
 {
-    // The value is not in the tree
+
     if (tree == nullptr)
     {
         return nullptr;
@@ -593,7 +534,6 @@ Node<Key,Info>* Dictionary<Key,Info>::getNode(Node<Key,Info>* tree, const Key& w
     }
 }
 
-// Performs a left rotation on a subtree
 template<typename Key, typename Info>
 Node<Key,Info>* Dictionary<Key,Info>::rotateLeft(Node<Key,Info>*& tree)
 {
@@ -612,11 +552,10 @@ Node<Key,Info>* Dictionary<Key,Info>::rotateLeft(Node<Key,Info>*& tree)
     return tree;
 }
 
-// Performs a left-right rotation on a subtree
 template<typename Key, typename Info>
 Node<Key,Info>* Dictionary<Key,Info>::rotateLeftRight(Node<Key,Info>*& tree)
 {
-    // From the diagram in the lecture notes, slide 29
+
     Node<Key,Info>* s = tree->left;
     tree->left = rotateLeft(s);
     tree = rotateRight(tree);
@@ -624,13 +563,12 @@ Node<Key,Info>* Dictionary<Key,Info>::rotateLeftRight(Node<Key,Info>*& tree)
     return tree;
 }
 
-// Performs a right rotation on a subtree
 template<typename Key, typename Info>
 Node<Key,Info>* Dictionary<Key,Info>::rotateRight(Node<Key,Info>*& tree)
 {
     if (tree->left != nullptr)
     {
-        // From the diagram in the lecture notes, slide 22
+
         Node<Key,Info>* s = tree->left;
         Node<Key,Info>* b = s->right;
 
@@ -642,11 +580,9 @@ Node<Key,Info>* Dictionary<Key,Info>::rotateRight(Node<Key,Info>*& tree)
     return tree;
 }
 
-// Performs a right-left rotation on a subtree
 template<typename Key, typename Info>
 Node<Key,Info>* Dictionary<Key,Info>::rotateRightLeft(Node<Key,Info>*& tree)
 {
-    // From the diagram in the lecture notes, slide 27
     Node<Key,Info>* s = tree->right;
     tree->right = rotateRight(s);
     tree = rotateLeft(tree);

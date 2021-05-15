@@ -721,6 +721,7 @@ bool Ring<Key, Info>::insertBefore(const Key& newKey, const Info& newInfo, Itera
         nptr->prev=etr->prev;
         etr->prev->next=nptr;
         etr->prev = nptr;
+
         return true;
     }
 

@@ -82,16 +82,16 @@ public:
     void preorder(void callback(const Key &where)) const;
     void preOrder2It(Node<Key,Info>* node) const;
     void preOrder2() const;
+    void inorder2It(Node<Key,Info>* node) const;
+    void inorder2() const;
     void printGraphIt(Node<Key,Info>* node,int ident,vector<int> indexVector)const;
     void printGraph() const;
-    void printGraphHorizontalIt(Node<Key,Info>* node,int ident,vector<int> indexVector,int currHeigth,int horizontalIndex,int actualSpaces)const;
-    void printGraphHorizontal() const;
+
     void preorderTraversal() const;
     bool remove(const Key &what);
 
     Node<Key,Info>* getRoot() const;
     Info getInfo(const Key &where);
-
 
 
     void preORet(Node<Key,Info> *c);
@@ -105,69 +105,28 @@ private:
     Node<Key, Info> *root;
     int numNodes;
 
-
-
     Node<Key, Info> *balance(Node<Key, Info> *&tree);
-
-
     Node<Key, Info> *balanceFromLeft(Node<Key, Info> *&tree);
-
-
     Node<Key, Info> *balanceFromRight(Node<Key, Info> *&tree);
-
-
     void clear(Node<Key, Info> *&tree);
-
-
     Node<Key, Info> *deleteNode(Node<Key, Info> *&tree);
-
-
     int difference(const Node<Key, Info> *tree) const;
-
-
     Node<Key, Info> *find(Node<Key, Info> *tree, const Key &where) const;
-
-
     Node<Key, Info> *getmax(Node<Key, Info> *&tree);
-
-
     int height(const Node<Key, Info> *tree) const;
-
-
     void inorder(Node<Key, Info> *tree, void callback(const Key &where)) const;
-
     Node<Key, Info> *insertIntoAVL(Node<Key, Info> *&tree,
                                    Node<Key, Info> *&newNode,
                                    bool &isTaller);
-
-
     int leaves(const Node<Key, Info> *tree) const;
-
-
     void preorder(Node<Key, Info> *tree, void callback(const Key &where)) const;
-
-
     static void print(const Key &where);
-
-
     Node<Key, Info> *remove(Node<Key, Info> *&tree, const Key &where, bool &flag);
-
-
     Node<Key, Info> *removemax(Node<Key, Info> *&node);
-
-
     Node<Key, Info> *getNode(Node<Key, Info> *tree, const Key &where);
-
-
     Node<Key, Info> *rotateLeft(Node<Key, Info> *&tree);
-
-
     Node<Key, Info> *rotateLeftRight(Node<Key, Info> *&tree);
-
-
     Node<Key, Info> *rotateRight(Node<Key, Info> *&tree);
-
-
     Node<Key, Info> *rotateRightLeft(Node<Key, Info> *&tree);
 };
 
