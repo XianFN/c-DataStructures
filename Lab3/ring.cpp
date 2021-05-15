@@ -704,12 +704,8 @@ bool Ring<Key, Info>::insertAfter(const Key& newKey, const Info& newInfo, Iterat
 template <typename Key, typename Info>
 bool Ring<Key, Info>::insertBefore(const Key& newKey, const Info& newInfo, Iterator where, bool direct){
 
-    if (where == end(true)) {
-        return false;
-    }
-    if (where.owner != this) { // the iterator is from another Ring
-        return false;
-    }
+
+
 
     if (!direct) {
         insertAfter(newKey,newInfo,where,!direct);

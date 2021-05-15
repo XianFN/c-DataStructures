@@ -652,3 +652,57 @@ Node<Key,Info>* Dictionary<Key,Info>::rotateRightLeft(Node<Key,Info>*& tree)
     tree = rotateLeft(tree);
     return tree;
 }
+
+template<typename Key, typename Info>
+Dictionary<Key,Info>::Dictionary (const Dictionary<Key, Info>&that){
+
+    root = copyHelper(that.root);
+
+}
+
+template<typename Key, typename Info>
+Dictionary<Key,Info>& Dictionary<Key,Info>::operator=(const Dictionary<Key,Info>& that)
+{
+    //COPY
+    if(this != &that)
+    {
+        this->clear();
+        Node<Key,Info> *c = that.root;
+        preORet(c);
+    }
+    return *this;
+}
+
+template<typename Key, typename Info>
+Node<Key,Info>* Dictionary<Key,Info>::copyHelper(const Node<Key,Info> *toCopy){
+    if (toCopy == NULL)
+        return NULL;
+    Node<Key,Info> *copyNode = new Node<Key,Info>(toCopy->key,toCopy->info);
+    copyNode->left = copyHelper(toCopy->left);
+    copyNode->right = copyHelper(toCopy->right);
+    return copyNode;
+}
+template<typename Key, typename Info>
+void Dictionary<Key,Info>::preORet(Node<Key,Info> *c)
+{
+    this->insert(c->key);
+
+    if(c->left != nullptr)
+        preORet(c->left);
+    else if(c->right != nullptr)
+        preORet(c->right);
+}
+template<typename Key, typename Info>
+bool Dictionary<Key,Info>::operator==(const Dictionary<Key,Info> &other){
+
+        return (root == 0 && other.root == 0)
+               || (root != 0 && other.root != 0 && *root == *other.root);
+
+}
+
+template<typename Key, typename Info>
+bool Dictionary<Key,Info>::operator!=(const Dictionary<Key,Info> &other){
+    return !(*this==other);
+}
+
+

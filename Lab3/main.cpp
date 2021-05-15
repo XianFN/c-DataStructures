@@ -28,7 +28,7 @@ Ring <int, string>&  listing (const Dictionary <string, int>& Dict);
 
 vector<int> randomVector(const int size, const int start, const int stop);
 void testRetrieveEntry(const int entry,Dictionary<int,int>& tree);
-Ring<int,string> recursiveDicToRing(Node<string,int>* node, Ring<int,string> ring);
+void recursiveDicToRing(Node<string,int>* node,Ring<int,string>& ring);
 
 // template <class T>
 void print(const int& value);
@@ -41,25 +41,23 @@ int main() {
     tree.printGraph();
 */
     Dictionary<string,int> tree;
-    tree.insert("hola");
-    tree.insert("prueba");
-    tree.insert("hola");
-    tree.insert("zz");
-    tree.insert("aaa");
-    tree.insert("aaa");
+    tree.insert("c");
+    tree.insert("a");
     tree.insert("b");
+    tree.insert("b");
+
 
     tree.printGraph();
 
 
     Ring<int,string>& ring= listing(tree);
-    cout<<"f";
+
     ring.print2(true);
 
 
    // counter("Text books/The Jungle Book by Rudyard Kipling (ANSI).txt");
     //counter("Text books/El camino de los reyes - Brandon Sanderson.txt");
-    //test();
+   // test();
     /*
     Dictionary<int,int> treeRoot;
     int num;
@@ -181,13 +179,15 @@ void PrintVector(vector<string> v){
 }
 Ring <int,string>&  listing (const Dictionary <string,int>& Dict){
 
+
+
     static Ring<int,string> ret;
-    cout<<"f";
-    ret=recursiveDicToRing(Dict.getRoot(),ret);
-    cout<<"f";
+    recursiveDicToRing(Dict.getRoot(),ret);
+
+
     return ret;
 }
-Ring<int,string> recursiveDicToRing(Node<string,int>* node, Ring<int,string> ring){
+ void recursiveDicToRing(Node<string,int>* node, Ring<int,string>& ring){
 
     if (node != NULL) {
 
@@ -195,6 +195,8 @@ Ring<int,string> recursiveDicToRing(Node<string,int>* node, Ring<int,string> rin
         it=ring.begin(true);
         typename Ring<int, string>::Iterator fin;
         fin=ring.end(true);
+        typename Ring<int, string>::Iterator head;
+        head=ring.begin(true);
         if (it.isEmpty()){
             ring.insertAtBeg(node->info,node->key,true);
         }else {
@@ -203,12 +205,23 @@ Ring<int,string> recursiveDicToRing(Node<string,int>* node, Ring<int,string> rin
                 it++;
             }
             if (it.getKey() == node->info ){
-                while (it.getInfo() < node->key && it.operator!=(fin) ) {
+                cout<<it.getKey();
+                while (it.getInfo() < node->key && it.operator!=(fin) && it.getKey() == node->info) {
 
                     it++;
                 }
                 if (it.operator==(fin)){
-                    ring.insertAtEnd(node->info,node->key,true);
+                    if (it.getKey() > node->info)
+                    {
+                        if (it.operator==(head) ){
+                            ring.insertAtBeg(node->info,node->key,true);
+                        }else {
+                            ring.insertBefore(node->info, node->key, it, true);
+                        }
+                    }else{
+                        ring.insertAtEnd(node->info,node->key,true);
+                    }
+
                 }else{
                     ring.insertBefore(node->info,node->key,it,true);
 
@@ -216,7 +229,19 @@ Ring<int,string> recursiveDicToRing(Node<string,int>* node, Ring<int,string> rin
 
             }else{
                 if (it.operator==(fin)){
-                    ring.insertAtEnd(node->info,node->key,true);
+                    if (it.getInfo() > node->key)
+                    {
+                        if (it.operator==(head) ){
+                            ring.insertAtBeg(node->info,node->key,true);
+                        }else {
+                            ring.insertBefore(node->info, node->key, it, true);
+                        }
+
+                    }else{
+                        ring.insertAtEnd(node->info,node->key,true);
+
+                    }
+
                 }else{
                     ring.insertBefore(node->info,node->key,it,true);
 
@@ -224,12 +249,11 @@ Ring<int,string> recursiveDicToRing(Node<string,int>* node, Ring<int,string> rin
             }
 
         }
-        if (node->left != NULL){
-            recursiveDicToRing(node->left, ring);
-        }
-        if (node->right != NULL){
-            recursiveDicToRing(node->right, ring);
-        }
+
+             recursiveDicToRing(node->left,ring );
+             recursiveDicToRing(node->right, ring );
+
+
     }
 
 }
@@ -260,6 +284,129 @@ void test(){
 
     tree.inorderTraversal();
     tree.preOrder2();
+
+    /*
+
+    // Testing Constructor and empty()
+    Dictionary<int,int> intBST;
+// test the class constructor
+    cout << "Constructing empty BST\n";
+    cout << "BST " << (intBST.isEmpty() ? "is" : "is not") << " empty\n";
+// Testing inorder
+    cout << "Inorder Traversal of BST: \n";
+    intBST.inorderTraversal();
+    // Testing insert
+    cout << "\nNow insert a bunch of integers into the BST."
+            "\nTry items not in the BST and some that are in it:\n";
+    int number;
+    for (;;)
+    {
+        cout << "Item to insert (-999 to stop): ";
+        cin >> number;
+        if (number == -999) break;
+        intBST.insert(number);
+    }
+   // intBST.graph(cout);
+    cout << "BST " << (intBST.isEmpty() ? "is" : "is not") << " empty\n";
+    cout << "Inorder Traversal of BST: \n";
+    intBST.inorderTraversal();
+    cout << endl;
+// Testing search()
+    cout << "\n\nNow testing the search() operation."
+            "\nTry both items in the BST and some not in it:\n";
+    for (;;)
+    {
+        cout << "Item to find (-999 to stop): ";
+        cin >> number;
+        if (number == -999) break;
+        cout << (intBST.search(number) ? "Found" : "Not found") << endl;
+    }
+// Testing remove()
+    cout << "\nNow testing the remove() operation."
+            "\nTry both items in the BST and some not in it:\n";
+    for (;;)
+    {
+        cout << "Item to remove (-999 to stop): ";
+        cin >> number;
+        if (number == -999) break;
+        intBST.remove(number);
+        //   intBST.graph(cout);
+    }
+    cout << "\nInorder Traversal of BST: \n";
+    intBST.inorderTraversal();
+    cout << endl;
+     */
+
+    /* ---- PART 1 ----
+// Testing Preorder and Postorder
+    cout << "\nInorder Traversal of BST: \n";
+    intBST.inorder(cout);
+    cout << "\nPreorder Traversal of BST: \n";
+    intBST.preorder(cout);
+    cout << "\nPostorder Traversal of BST: \n";
+    intBST.postorder(cout);
+    cout << endl;
+    ---- END PART 1 ----*/
+// ---- PART 2 ----
+// Testing the Destructor
+cout << "\nNow testing the destructor. Remember to add an output\n"
+"statement to your destructor to indicate when it is called.\n";
+
+Dictionary<int,int> anotherBST;
+anotherBST.insert(6); anotherBST.insert(9); anotherBST.insert(5);
+anotherBST.insert(1); anotherBST.insert(3); anotherBST.insert(7);
+ cout << "\nInorder Traversal of another BST: \n";
+anotherBST.inorderTraversal();
+cout << "\n\nLifetime of this BST is over -- now destroy it.\n";
+
+//---- END PART 2 ----*/
+
+// ---- PART 3 ----
+// Testing the Copy Constructor
+cout << "\nNow testing the copy constructor.\n";
+cout << "-- First with an initializing declaration: "
+"BST<int> copy = intBST;\n";
+    Dictionary<int,int> intBST;
+    intBST.insert(2);
+
+    Dictionary<int,int> copy = intBST;
+cout << "-- Inorder traversal of copy:\n";
+copy.inorderTraversal();
+cout << "\n\n-- Now by passing intBST to a value parameter:\n";
+//I dont know why i need this function, because the copy constructor is called directly.
+//makeCopy(intBST);
+cout << "\n--Check that original BST hasn't been changed.\n"
+"-- Inorder traversal of original:\n";
+intBST.inorderTraversal();
+cout << endl;
+//---- END PART 3 ----*/
+// ---- PART 4 ----
+// Testing the Assignment Operator
+cout << "\nNow testing the assignment constructor with the statement:\n";
+
+Dictionary<int,int> anotherBST2;
+copy = anotherBST2 = intBST;
+cout << "\n-- Inorder traversal of intBST:\n";
+intBST.inorderTraversal();
+cout << endl;
+cout << "\n-- Inorder traversal of anotherBST:\n";
+anotherBST2.inorderTraversal();
+cout << endl;
+cout << "\n-- Inorder traversal of copy:\n";
+copy.inorderTraversal();
+cout << endl;
+cout << " Now testing self-assignment with: copy = copy;\n";
+copy = copy;
+cout << endl;
+cout << "\n-- Inorder traversal of copy:\n";
+copy.inorderTraversal();
+cout << endl;
+
+
+
+
+
+
 
 
 

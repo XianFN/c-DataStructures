@@ -26,6 +26,13 @@ public:
         right = right_node;
         height = 0;
     }
+    Node(Key key_, Info info_,  Node *left_node = nullptr, Node *right_node = nullptr) {
+        key = key_;
+        info = info_;
+        left = left_node;
+        right = right_node;
+        height = 0;
+    }
 
     Node(Node *left_node = nullptr, Node *right_node = nullptr) {
         key = nullptr;
@@ -34,8 +41,17 @@ public:
         right = right_node;
         height = 0;
     }
-
+    friend bool operator==(Node const & lhs, Node const & rhs)
+    {
+        return lhs.info == rhs.info && lhs.key ==rhs.key
+               && ((lhs.left == 0 && rhs.left == 0)
+                   || (lhs.left != 0 && rhs.left != 0 && *lhs.left == *rhs.left))
+               && ((lhs.right == 0 && rhs.right == 0)
+                   || (lhs.right != 0 && rhs.right != 0 && *lhs.right == *rhs.right));
+    }
     bool isLeaf() const { return (left == nullptr && right == nullptr); }
+    bool hasRigthChild() const { return (right != nullptr); }
+    bool hasLeftChild() const { return (left != nullptr ); }
 
 };
 
@@ -44,33 +60,24 @@ class Dictionary {
 
 public:
 
-    /** Constructor */
+
     Dictionary();
-
-    /** Destructor */
     ~Dictionary();
-
+    Dictionary (const Dictionary<Key, Info>&);
+    Dictionary<Key, Info>& operator= (const Dictionary<Key, Info>&copy);
+    Node<Key,Info>* copyHelper(const Node<Key,Info> *toCopy);
 
     void clear();
-
-
     bool search(const Key &where);
-
     int height() const;
 
     void inorder(void callback(const Key &where)) const;
-
     void inorderTraversal() const;
-
     bool insert(const Key &newKey);
 
-
     bool isEmpty() const;
-
     int leaves() const;
-
     int length() const;
-
 
     void preorder(void callback(const Key &where)) const;
     void preOrder2It(Node<Key,Info>* node) const;
@@ -79,20 +86,18 @@ public:
     void printGraph() const;
     void printGraphHorizontalIt(Node<Key,Info>* node,int ident,vector<int> indexVector,int currHeigth,int horizontalIndex,int actualSpaces)const;
     void printGraphHorizontal() const;
-
-
     void preorderTraversal() const;
-
-
     bool remove(const Key &what);
 
-
     Node<Key,Info>* getRoot() const;
-
-
     Info getInfo(const Key &where);
 
 
+
+    void preORet(Node<Key,Info> *c);
+
+    bool operator==(const Dictionary<Key,Info> &other);
+    bool operator!=(const Dictionary<Key,Info> &other);
     class NoSuchValue {
     };
 
