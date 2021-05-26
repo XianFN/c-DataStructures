@@ -6,6 +6,7 @@
 #define DICTIONARY_H
 #include <iostream>
 #include <vector>
+#include <map>
 using namespace std;
 
 template<typename Key, typename Info>
@@ -21,7 +22,7 @@ public:
 
     Node(Key key_,  Node *left_node = nullptr, Node *right_node = nullptr) {
         key = key_;
-        info = 1;
+        info = 0;
         left = left_node;
         right = right_node;
         height = 0;
@@ -36,7 +37,7 @@ public:
 
     Node(Node *left_node = nullptr, Node *right_node = nullptr) {
         key = nullptr;
-        info = 1;
+        info = 0;
         left = left_node;
         right = right_node;
         height = 0;
@@ -65,7 +66,7 @@ public:
     ~Dictionary();
     Dictionary (const Dictionary<Key, Info>&);
     Dictionary<Key, Info>& operator= (const Dictionary<Key, Info>&copy);
-    Node<Key,Info>* copyHelper(const Node<Key,Info> *toCopy);
+
 
     void clear();
     bool search(const Key &where);
@@ -73,28 +74,32 @@ public:
 
     void inorder(void callback(const Key &where)) const;
     void inorderTraversal() const;
-    bool insert(const Key &newKey);
+    bool insert(const Key &newKey, const Info &newInfo);
 
     bool isEmpty() const;
-    int leaves() const;
-    int length() const;
+
+    int numberOfElements() const;
 
     void preorder(void callback(const Key &where)) const;
-    void preOrder2It(Node<Key,Info>* node) const;
+
     void preOrder2() const;
-    void inorder2It(Node<Key,Info>* node) const;
+
     void inorder2() const;
-    void printGraphIt(Node<Key,Info>* node,int ident,vector<int> indexVector)const;
+
     void printGraph() const;
 
     void preorderTraversal() const;
     bool remove(const Key &what);
 
-    Node<Key,Info>* getRoot() const;
-    Info getInfo(const Key &where);
+
+    Info getInfo(const Key &where) ;
+    void setInfo(const Key &where, Info &newInfo);
+    map<Key,Info> getMap() const;
+    vector<string> getVectorString() const;
+    vector<Key> getVectorKey() const;
+    vector<Info> getVectorInfo() const;
 
 
-    void preORet(Node<Key,Info> *c);
 
     bool operator==(const Dictionary<Key,Info> &other);
     bool operator!=(const Dictionary<Key,Info> &other);
@@ -105,6 +110,11 @@ private:
     Node<Key, Info> *root;
     int numNodes;
 
+    Node<Key,Info>* copyHelper(const Node<Key,Info> *toCopy);
+    void recursiveGetMap(Node<Key, Info>* node, map<Key,Info>& v) const;
+    void recursiveGetVectorString(Node<Key, Info>* node, vector<string>& v) const;
+    void recursiveGetVectorKey(Node<Key, Info>* node, vector<Key>& v) const;
+    void recursiveGetVectorInfo(Node<Key, Info>* node, vector<Info>& v) const;
     Node<Key, Info> *balance(Node<Key, Info> *&tree);
     Node<Key, Info> *balanceFromLeft(Node<Key, Info> *&tree);
     Node<Key, Info> *balanceFromRight(Node<Key, Info> *&tree);
@@ -118,8 +128,13 @@ private:
     Node<Key, Info> *insertIntoAVL(Node<Key, Info> *&tree,
                                    Node<Key, Info> *&newNode,
                                    bool &isTaller);
-    int leaves(const Node<Key, Info> *tree) const;
+
+
     void preorder(Node<Key, Info> *tree, void callback(const Key &where)) const;
+    void preORet(Node<Key,Info> *c);
+    void preOrder2It(Node<Key,Info>* node) const;
+    void inorder2It(Node<Key,Info>* node) const;
+    void printGraphIt(Node<Key,Info>* node,int ident,vector<int> indexVector)const;
     static void print(const Key &where);
     Node<Key, Info> *remove(Node<Key, Info> *&tree, const Key &where, bool &flag);
     Node<Key, Info> *removemax(Node<Key, Info> *&node);

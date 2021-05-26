@@ -5,6 +5,9 @@
 #include <iostream>
 #include "Dictionary.h"
 #include <vector>
+#include <map>
+#include <sstream>
+
 using namespace std;
 
 
@@ -82,10 +85,10 @@ void Dictionary<Key,Info>::inorderTraversal() const
 
 
 template<typename Key, typename Info>
-bool Dictionary<Key,Info>::insert(const Key& newKey)
+bool Dictionary<Key,Info>::insert(const Key& newKey,const Info &newInfo)
 {
     bool isTaller = false;
-    Node<Key,Info>* newNode = new Node<Key,Info>(newKey);
+    Node<Key,Info>* newNode = new Node<Key,Info>(newKey,newInfo);
 
     root = insertIntoAVL(root, newNode, isTaller);
 
@@ -100,15 +103,9 @@ bool Dictionary<Key,Info>::isEmpty() const
 }
 
 
-template<typename Key, typename Info>
-int Dictionary<Key,Info>::leaves() const
-{
-    return leaves(root);
-}
-
 
 template<typename Key, typename Info>
-int Dictionary<Key,Info>::length() const
+int Dictionary<Key,Info>::numberOfElements() const
 {
     return numNodes;
 }
@@ -151,7 +148,7 @@ void Dictionary<Key,Info>::printGraph() const
 
     if (root != NULL)
     {
-        vector<int> indexVector(this->length(), 0);;
+        vector<int> indexVector(this->numberOfElements(), 0);;
         cout<<endl;
         printGraphIt(root,0,indexVector);
     }
@@ -197,16 +194,6 @@ bool Dictionary<Key,Info>::remove(const Key& what)
 
 
 template<typename Key, typename Info>
-Node<Key,Info>* Dictionary<Key,Info>::getRoot() const{
-    if (root){
-        return root;
-    }else{
-        return new Node<Key,Info>();
-    }
-
-}
-
-template<typename Key, typename Info>
 Info Dictionary<Key,Info>::getInfo(const Key& value)
 {
 
@@ -220,6 +207,142 @@ Info Dictionary<Key,Info>::getInfo(const Key& value)
     return node->info;
 }
 
+template<typename Key, typename Info>
+void Dictionary<Key,Info>::setInfo(const Key &where, Info &newInfo){
+
+    Node<Key,Info>* node = getNode(root, where);
+    node->info=newInfo;
+
+}
+template<typename Key, typename Info>
+map<Key,Info> Dictionary<Key,Info>::getMap() const
+{
+
+    if (root!= nullptr){
+        static map<Key,Info> vec;
+        recursiveGetMap(root,vec);
+
+        return vec;
+    }else{
+        static map<Key,Info> vec;
+        return vec;
+    }
+
+}
+template<typename Key, typename Info>
+vector<string> Dictionary<Key,Info>::getVectorString() const
+{
+
+    if (root!= nullptr){
+        static vector<string> vec;
+        recursiveGetVectorString(root,vec);
+
+        return vec;
+    }else{
+        static vector<string> vec;
+        return vec;
+    }
+
+}
+template<typename Key, typename Info>
+vector<Key> Dictionary<Key,Info>::getVectorKey() const
+{
+
+    if (root!= nullptr){
+        static vector<Key> vec;
+        recursiveGetVectorKey(root,vec);
+
+        return vec;
+    }else{
+        static vector<Key> vec;
+        return vec;
+    }
+
+}
+template<typename Key, typename Info>
+vector<Info> Dictionary<Key,Info>::getVectorInfo() const
+{
+
+    if (root!= nullptr){
+        static vector<Info> vec;
+        recursiveGetVectorInfo(root,vec);
+
+        return vec;
+    }else{
+        static vector<Info> vec;
+        return vec;
+    }
+
+}
+
+
+
+
+template<typename Key, typename Info>
+void Dictionary<Key,Info>::recursiveGetMap(Node<Key, Info>* node, map<Key,Info>& v) const{
+
+    if (node != nullptr) {
+
+
+
+        v.insert({node->key,node->info});
+
+        recursiveGetMap(node->left, v);
+        recursiveGetMap(node->right, v);
+    }
+
+
+
+}
+
+
+template<typename Key, typename Info>
+void Dictionary<Key,Info>::recursiveGetVectorString(Node<Key, Info>* node, vector<string>& v) const{
+
+    if (node != nullptr) {
+
+        ostringstream os;
+        os << node->key << ","<<node->info;
+        string s = os.str();
+
+
+        v.push_back(s);
+
+        recursiveGetVectorString(node->left, v);
+        recursiveGetVectorString(node->right, v);
+    }
+
+
+
+}
+template<typename Key, typename Info>
+void Dictionary<Key,Info>::recursiveGetVectorKey(Node<Key, Info>* node, vector<Key>& v) const{
+
+    if (node != nullptr) {
+
+        v.push_back(node->key);
+
+        recursiveGetVectorKey(node->left, v);
+        recursiveGetVectorKey(node->right, v);
+    }
+
+
+
+}
+template<typename Key, typename Info>
+void Dictionary<Key,Info>::recursiveGetVectorInfo(Node<Key, Info>* node, vector<Info>& v) const{
+
+    if (node != nullptr) {
+
+        v.push_back(node->info);
+
+        recursiveGetVectorInfo(node->left, v);
+        recursiveGetVectorInfo(node->right, v);
+    }
+
+
+
+}
 
 template<typename Key, typename Info>
 Node<Key,Info>* Dictionary<Key,Info>::balance(Node<Key,Info>*& tree)
@@ -407,10 +530,7 @@ Node<Key,Info>* Dictionary<Key,Info>::insertIntoAVL(Node<Key,Info>*& tree,
         tree = newNode;
         numNodes++;
     }
-    else if(tree->key == newNode->key){
-        tree->info++;
-    }
-            else if (tree->key > newNode->key)
+    else if (tree->key > newNode->key)
     {
         tree->left = insertIntoAVL(tree->left, newNode, isTaller);
         tree = balance(tree);
@@ -424,23 +544,6 @@ Node<Key,Info>* Dictionary<Key,Info>::insertIntoAVL(Node<Key,Info>*& tree,
     return tree;
 }
 
-template<typename Key, typename Info>
-int Dictionary<Key,Info>::leaves(const Node<Key,Info>* tree) const
-{
-    if (tree == nullptr)
-    {
-        return 0;
-    }
-
-    if (tree->isLeaf())
-    {
-        return 1;
-    }
-    else
-    {
-        return leaves(tree->left) + leaves(tree->right);
-    }
-}
 
 template<typename Key, typename Info>
 void Dictionary<Key,Info>::preorder(Node<Key,Info>* tree,
@@ -621,7 +724,7 @@ Node<Key,Info>* Dictionary<Key,Info>::copyHelper(const Node<Key,Info> *toCopy){
 template<typename Key, typename Info>
 void Dictionary<Key,Info>::preORet(Node<Key,Info> *c)
 {
-    this->insert(c->key);
+    this->insert(c->key,c->info);
 
     if(c->left != nullptr)
         preORet(c->left);
